@@ -6,11 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Spatie\Permission\Traits\HasRoles;
+use App\Models\Presupuesto;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable , HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +22,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'last_name',
+        'avatar',
+        'estado',
+        'edad',
+        'telefono',
+        'cedula',
+        'id_user'
     ];
 
     /**
@@ -45,4 +53,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function presupuestos(){
+        return $this->hasMany(Presupuesto::class, 'id_user');
+    }
+
+    public function events(){
+        return $this->hasMany(Eventos::class , 'id_user') ;
+    }
+
+    public function solicitudes_doctor(){
+        return $this->hasMany(Solicitud::class , 'id_doctor') ;
+    }
+
+    public function solicitudes_paciente(){
+        return $this->hasMany(Solicitud::class , 'id_paciente') ;
+    }
+
+    public function precio_citas(){
+        return $this->belongsTo(PresioCita::class , 'id') ;
+    }
+
+    
 }

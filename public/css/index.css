@@ -1,0 +1,257 @@
+:root{
+  --color_body:#eeeeefff;
+   --color_primario: #fff ;
+   --color_secundario: #fff  ;
+   --color_ternario: #f2f2f2;  
+   --color_text_segundario: #fff  ;
+   --color_texto: #b29212 ;
+   --color_fondo:  linear-gradient( 180deg, #000 ,   #17202a  );
+   --color_fondo2:  linear-gradient( 360deg,  #17202a  ,   black  );
+   --color_menu: #3399ffff;
+   --color_tabla_td :  #f8f0f0;
+}
+body {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+   position: relative;
+  color: #000!important;
+  background: var(--color_body)!important;
+}
+a{
+  text-decoration: none!important;
+}
+
+
+thead tr th{
+  background: var(--color_menu)!important;
+  color: var(--color_text_segundario)!important;
+  text-align: center!important;
+  border-bottom:none;
+}
+
+tbody tr td{
+  background: var(--color_tabla_td)!important;
+  color: black!important;
+  text-align: center!important;
+  border-bottom:none;
+  
+}
+#content{
+  background-color: var(--color_fondo) !important;
+}
+
+#userTable_info, .pagination , .dt-search ,.dt-layout-cell ,.previous {
+  color: black!important;
+}
+.sombra{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.circle_avatar{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.table-container{
+  background:  var(--color_primario);
+  border-radius: 5px;
+  padding:10px 0;
+}
+
+.table-container_show{
+  background:  var(--color_primario);
+  border-radius: 5px;
+ 
+}
+#sidebar {
+  flex-shrink: 0;
+  width: 250px;
+  background-color: var(--color_menu);
+  color: white;
+  transition: all 0.3s;
+}
+#sidebar .nav-link {
+  color: white;
+}
+.nav-item.active {
+  background-color: #495057;
+}
+
+#sidebar.active {
+  background-color: #495057;
+}
+#content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.loginContainer{
+  background-color: var(--color_primario);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.loginContainer .formulario-login{
+   background: white;
+   width: 350px;
+   height: 500px;
+   padding: 0;
+   border-radius: 10px;
+   box-shadow: 0 0 10px rgba(0,0,0,0.2);
+   display: grid;
+   grid-template-rows: 30% 1fr;
+}
+.main_login{
+  
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color_secundario);
+} 
+.main_login img{
+  
+    
+}
+
+.cursor{
+   cursor: pointer;
+}
+.formulario-body{
+  padding: 20px;
+ 
+}
+.border{
+  border: solid 1px black;
+}
+
+.ml-2{
+  margin-left: 2px;
+}
+
+.ml-4{
+  margin-left: 4px;
+}
+   
+.header-container{
+  background-color: var(--color_primario);
+  height: 60px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+input{
+  font-family: 'Lato', sans-serif;
+  font-size: 12px!important;
+}
+.btn-default{
+  background-color: var(--color_texto)!important;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  width: 100%;
+  height: 40px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  padding: 0 10px;
+}
+.btn-default.auto{
+  width: auto;
+}
+  .input {
+   
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  label {
+    position: relative;
+    top: 20px;
+    font-size: 12px;
+    font-family: 'Lato', sans-serif;
+  }
+
+.modal_custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+  padding: 20px;
+  
+  z-index: 1000;
+}
+.modal_content{
+   background-color: white;
+   padding: 20px;
+   
+   z-index: 1000;
+   min-width: 400px;
+   max-width: 600px;
+   border-radius: 5px;
+   height: auto;
+}
+.modal-content {
+  text-align: center;
+}
+
+.container2{
+  background-color: var(--color_primario);
+  display: flex;
+  flex-direction: column;
+ 
+  padding: 20px;
+  
+  border-radius: 5px;
+}
+.color-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.pointer{
+  cursor: pointer;
+  text-decoration: none!important;
+ 
+}
+.color-option.selected {
+  border-color: #007bff; /* Borde azul para indicar selección */
+}
+
+.ffull-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  #sidebar {
+    width: 100%;
+    height: 60px;
+  }
+  #content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+}
+
+
