@@ -21,8 +21,8 @@ class HistoriaController extends Controller
         $usuario =  User::find($id);
          // return view('historia_medica.odontograma_sho' , ['odontograma' =>json_decode(Odontogram::find(2)->data )]);
         return view('historia_medica.index', [
-            'presupuestos' => $usuario->presupuestos,
-            'usuario' => $usuario,
+            'presupuestos' => $usuario->presupuestos ?? [],
+            'usuario' => $usuario ?? [],
             'id_usuario' => $usuario->id
         ]);
     }

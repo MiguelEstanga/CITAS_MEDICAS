@@ -11,7 +11,7 @@ class Presupuesto extends Model
         'diagnostico',
         'observacion',
         'fecha',
-        'id_usuario',
+        'id_user',
         'a_cuenta',
         'saldo',
         'total',
