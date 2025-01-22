@@ -39,6 +39,8 @@ class UserController extends Controller
             $filePath = $request->file('imagen')->store('images' , 'public');
          
             $user->avatar =  $filePath; // Ajustar ruta para accesibilidad
+        }else{
+            $user->avatar = 'sistema/avatar.jpg' ;
         }
 
         
