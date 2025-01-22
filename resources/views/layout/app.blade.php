@@ -19,7 +19,7 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <link rel="icon" href="{{ asset('storage/sistema/icono_diente.png') }}" type="image/png">
         
-    @livewireStyles
+    
 </head>
 
 <body  >
@@ -67,7 +67,7 @@
 
         @yield('content')
     </div>
-    @livewireScripts
+  
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.4.7/flowbite.min.js"></script>

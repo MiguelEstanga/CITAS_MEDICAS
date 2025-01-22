@@ -122,7 +122,7 @@
                     action="{{ route('auth') }}">
                     @csrf
                     <div class=" ">
-                        <label for="email" class="mb-4">{{asset('sistema/logo.png')}}</label>
+                        <label for="email" class="mb-4">Email</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                     </div>
 
