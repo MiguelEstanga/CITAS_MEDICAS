@@ -40,7 +40,7 @@ class UserController extends Controller
          
             $user->avatar =  $filePath; // Ajustar ruta para accesibilidad
         }else{
-            $user->avatar = 'sistema/avatar.jpg' ;
+            $user->avatar = 'sistema/icono_diente.png' ;
         }
 
         
