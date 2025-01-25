@@ -19,6 +19,7 @@ class PermisionSeeder extends Seeder
             'v_doctor',
             'v_paciente',
             'v_superusuario',
+            'v_administrador',
             // Agrega más permisos según tus necesidades
         ];
 

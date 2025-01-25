@@ -25,18 +25,18 @@
         </h2>
         <form action="" method="POST" id="formHistoria">
             @csrf
-            <x-input name="diagnostico" label="Diagnostico" required="true" value="{{ old('diagnostico') }}" />
-            <x-input name="observacion" label="Observación" required="true" value="{{ old('observacion') }}" />
-            <input  value="{{ $id_usuario }}" name="id_usuario" hidden>
+            <x-input name="diagnostico" label="Diagnostico" required="true" value="{{ old('diagnostico') }}" :required="true" />
+            <x-input name="observacion" label="Observación" required="true" value="{{ old('observacion') }}" :required="true" />
+            <input value="{{ $id_usuario }}" name="id_usuario" hidden>
             <div class="row">
                 <div class="col-4">
-                    <x-input name="fecha" type="date" label="Fecha" required="true" value="{{ old('fecha') }}" />
+                    <x-input name="fecha" type="date" label="Fecha" required="true" value="{{ old('fecha') }}" :required="true" />
                 </div>
                 <div class="col-4">
-                    <x-input name="a_cuenta" label="A cuenta" required="true" value="{{ old('a_cuenta') }}" />
+                    <x-input name="a_cuenta" label="A cuenta" required="true" value="{{ old('a_cuenta') }}" :required="true" />
                 </div>
                 <div class="col-4">
-                    <x-input name="saldo" label="Saldo" required="true" value="{{ old('saldo') }}" />
+                    <x-input name="saldo" label="Saldo" required="true" value="{{ old('saldo') }}" type="number" :required="true"  />
                 </div>
 
             </div>
@@ -92,7 +92,7 @@
         }
 
         .formulario.expanded {
-           
+
             /* Ajusta este valor según el tamaño del formulario */
             opacity: 1;
         }
@@ -131,7 +131,7 @@
             const a_cuenta = form.querySelector('[name="a_cuenta"]').value;
             const saldo = form.querySelector('[name="saldo"]').value;
             const id_usuario = form.querySelector('[name="id_usuario"]').value;
-           
+
             const cancelado = form.querySelector('[name="cancelado"]').checked;
 
             // 3. Construimos el objeto con el odontograma
@@ -166,7 +166,7 @@
                 saldo,
                 cancelado,
                 odontograma: dataOdontograma,
-                id_usuario:id_usuario
+                id_usuario: id_usuario
             };
 
             // 5. Hacemos la petición Fetch a tu ruta Laravel
@@ -182,7 +182,7 @@
                 .then(result => {
                     console.log(result);
                     if (result.success) {
-                          location.reload();
+                        location.reload();
                         // Redirigir, limpiar formulario, mostrar mensaje, etc.
                     } else {
                         alert("Error al guardar: " + (result.message || ''));
@@ -190,83 +190,9 @@
                 })
                 .catch(error => {
                     console.error(error);
-                    alert("Ocurrió un error en la petición.");
+                    alert("Ocurrió un error en la petición por favor rellena los campos requeridos.");
                 });
         }
     </script>
-    <script>
-        const dientes = 32;
-        const odontograma = document.getElementById("odontograma");
-
-        // Generar dientes con 5 partes (central + 4 segmentos)
-        function generarOdontograma() {
-            for (let i = 1; i <= dientes; i++) {
-                const diente = document.createElement("div");
-                diente.classList.add("diente");
-                diente.setAttribute("data-id", i);
-
-                // Crear número del diente
-                const numero = document.createElement("div");
-                numero.classList.add("numero-diente");
-                numero.innerText = i;
-                diente.appendChild(numero);
-
-                // Crear 5 partes: central, superior, inferior, izquierda, derecha
-                ["central", "superior", "inferior", "izquierda", "derecha"].forEach((parte) => {
-                    const seccion = document.createElement("div");
-                    seccion.classList.add("seccion", parte);
-                    seccion.setAttribute("data-parte", parte);
-                    seccion.setAttribute("data-diente", i);
-                    diente.appendChild(seccion);
-                });
-
-                odontograma.appendChild(diente);
-            }
-        }
-
-        // Manejar clics en las partes del diente
-        function manejarClick(event) {
-            const target = event.target;
-            if (!target.classList.contains("seccion")) return;
-
-            const parte = target.getAttribute("data-parte");
-            const diente = target.getAttribute("data-diente");
-            const accion = document.querySelector("input[name='accion']:checked").value;
-
-            let color = "";
-            switch (accion) {
-                case "fractura":
-                    color = "red";
-                    break;
-                case "restauracion":
-                    color = "blue";
-                    break;
-                case "empastado":
-                    color = "yellow";
-                    break;
-                case "sano":
-                    color = "green";
-                    break;
-                case "borrar":
-                    color = "";
-                    break;
-            }
-            target.style.backgroundColor = color;
-
-            console.log(`Diente: ${diente}, Parte: ${parte}, Acción: ${accion}`);
-        }
-
-        // Guardar el odontograma
-
-
-
-        // Inicializar el odontograma y añadir listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            generarOdontograma();
-            odontograma.addEventListener("click", manejarClick);
-
-            const btnGuardar = document.getElementById('btn-guardar');
-            btnGuardar.addEventListener('click', guardarOdontograma);
-        });
-    </script>
+   
 @endsection

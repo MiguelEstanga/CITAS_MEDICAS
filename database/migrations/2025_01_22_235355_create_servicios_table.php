@@ -11,13 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('presupuestos', function (Blueprint $table) {
-          
-            $table->foreignId('id_user')
+        Schema::create('servicios', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->string('descripcion');
+            $table->string('imagen');
+            $table->string('precio');
+            $table->foreignId('id_usuer')
             ->nullable()
             ->constrained('users')
             ->cascadeOnDelete()
             ->nullOnDelete();
+            $table->timestamps();
         });
     }
 
@@ -26,8 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('presupuesto', function (Blueprint $table) {
-            $table->dropColumn('nueva_columna'); // Elimina la columna agregada en la migración
-        });
+        Schema::dropIfExists('servicios');
     }
 };

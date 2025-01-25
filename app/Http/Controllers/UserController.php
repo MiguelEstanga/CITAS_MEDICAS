@@ -12,8 +12,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('admin.user.index' , [
-            'users' => User::all()
+        $administrador =  User::role('administrador')->get();
+        return view('pacientes.index', [
+            'pacientes' => $administrador,
+            'type' => 'usuario'
         ]);
     }
 

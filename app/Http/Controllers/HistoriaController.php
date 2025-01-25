@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Odontogram;
 use App\Models\Presupuesto;
+use App\Http\Controllers\ReporteController;
+
 class HistoriaController extends Controller
 {
     /**
@@ -19,7 +21,8 @@ class HistoriaController extends Controller
     public function index($id)
     {
         $usuario =  User::find($id);
-         // return view('historia_medica.odontograma_sho' , ['odontograma' =>json_decode(Odontogram::find(2)->data )]);
+        // return view('historia_medica.odontograma_sho' , ['odontograma' =>json_decode(Odontogram::find(2)->data )]);
+
         return view('historia_medica.index', [
             'presupuestos' => $usuario->presupuestos ?? [],
             'usuario' => $usuario ?? [],
@@ -31,13 +34,19 @@ class HistoriaController extends Controller
     public function ver_historia_medica($id)
     {
         $presupuesto = Presupuesto::find($id);
-        $odontograma = $presupuesto->odontograma->data;
-       
+        $odontograma = json_decode($presupuesto->odontograma->data, true);
+        
+        
         return view('historia_medica.ver_historia_medica', [
             'presupuesto' => $presupuesto,
-            'odontograma' => json_decode($odontograma)
+            'odontograma' => $odontograma
         ]);
     }
+
+    
+
+
+
     //de aqui para bajo se eliminara
     /**
      * Show the form for creating a new resource.
@@ -52,9 +61,9 @@ class HistoriaController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         try {
-           
+
             $historiaMedica = new HistoriaMedica();
             $historiaMedica->nombre_informe = $request->nombre_informe;
             $historiaMedica->antecedentes_familiares = $request->antecedentes_familiares;
@@ -68,7 +77,7 @@ class HistoriaController extends Controller
             $historiaMedica->carrillos = $request->carrillos;
             $historiaMedica->lengua = $request->lengua;
             $historiaMedica->atm = $request->atm;
-            $historiaMedica->oclucion	 = $request->Oclucion;
+            $historiaMedica->oclucion     = $request->Oclucion;
             $historiaMedica->piso_de_boca = $request->piso_de_boca;
             $historiaMedica->id_paciente = $request->id_paciente;
             $historiaMedica->id_control_citas = $request->id_control_citas;
@@ -78,8 +87,6 @@ class HistoriaController extends Controller
             Log::error($e->getMessage());
             return $e->getMessage();
         }
-
-       
     }
 
     /**

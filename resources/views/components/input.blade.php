@@ -7,6 +7,7 @@
     'iconLeft' => null,
     'iconRight' => null,
     'value' => null,
+    'id' => null,
 ])
 
 <div class="input">
@@ -19,7 +20,7 @@
         <i class="{{$iconLeft}}"></i>
       </span>
     @endif
-    <input {{ $required ? 'required' : '' }} name="{{$name}}" type="{{$type}}" class="form-control" id="{{$name}}" placeholder="{{$placeholder}}"  value="{{$value ?? ''}}">
+    <input  {{ $required ? 'required' : '' }} name="{{$name}}" type="{{$type}}" class="form-control" id="{{$name}}" placeholder="{{$placeholder}}"  value="{{$value ?? ''}}">
     
     <!-- Slot para ícono -->
     @if($type === 'password')

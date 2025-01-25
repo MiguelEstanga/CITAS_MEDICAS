@@ -14,8 +14,10 @@ class DoctorController extends Controller
     public function pacientes()
     {
         $paciente =  User::role('paciente')->get();
+        
         return view('pacientes.index', [
-            'pacientes' => $paciente
+            'pacientes' => $paciente,
+            'type' => 'paciente'
         ]);
     }
 

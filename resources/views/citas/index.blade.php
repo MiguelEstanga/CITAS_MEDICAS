@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="table-container mb-4">
+    <div class=" mb-4 d-flex justify-content-end align-items-center">
         <x-avatar :user="user()"></x-avatar>
     </div>
     <div class="table-container" style="max-height: 850px; overflow-y: auto;">
@@ -10,7 +10,7 @@
 
     <!-- Modal para crear evento -->
     <div class="modal" id="createEventModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog cart" role="document">
             <div class="modal-content ">
                 <div class="modal-header">
                     <h5 class="modal-title ">Crear Cita</h5>
@@ -19,18 +19,18 @@
                     <form id="createEventForm" method="POST" action="{{ route('eventos.store') }}"
                         enctype="multipart/form-data">
                         @csrf
-                        <div class="mb-3 input">
+                        <div class="input">
                             <label for="titlo" class="form-label mb-2">Título</label>
                             <input type="text" id="titlo" name="titulo" class="form-control"
                                 placeholder="Título de la cita">
                         </div>
 
-                        <div class="mb-3 input">
+                        <div class=" input">
                             <label for="createDate" class="form-label mb-2">Fecha</label>
                             <input type="date" id="createDate" name="fecha" class="form-control">
                         </div>
 
-                        <div class="mb-3 input">
+                        <div class="mb-2 input">
                             <label for="createStart" class="form-label mb-2">Hora de Inicio</label>
                             <input type="time" id="createStart" name="hora_inicio" class="form-control">
                         </div>
@@ -38,14 +38,8 @@
                             <label for="createEnd" class="form-label mb-2">Hora de Fin</label>
                             <input type="time" id="createEnd" name="hora_fin" class="form-control">
                         </div>
-                              
+                        <input type="hidden" id="createSelectedColor" name="color" value="#FF5733">
                       
-                        <div class="mb-3">
-                            <label for="color" class="form-label">Color</label>
-                            
-                            <input type="hidden" id="selectedColor" name="color" value="#FF5733"> <!-- Default color -->
-                        </div>
-
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>

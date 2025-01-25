@@ -2,7 +2,9 @@
 
 @section('content')
     
+<div class=" mb-4 d-flex justify-content-end align-items-center">
     <x-avatar :user="user()"></x-avatar>
+</div>
     
     <button style="width: 200px" class="btn-default mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#modal1">
         Crear nuevo item
@@ -85,8 +87,8 @@
                 @csrf
                 <x-input :required="true" name="nombre" label="Nombre del item" />
                 <x-input :required="true" name="descripcion" label="Descripción" />
-                <x-input :required="true" name="precio" label="Precio" />
-                <x-input :required="true" name="cantidad" label="Cantidad" />
+                <x-input :required="true" name="precio" label="Precio" type="number" />
+                <x-input :required="true" name="cantidad" label="Cantidad" type="number" />
                 <x-input_file label="Subir imagen" name="imagen" />
                 <input type="text" value="{{$tipos_productos == 'inventario' ? 'inventario' : 'medicamentos'}}" name="tipo_producto" hidden>
                 <div>

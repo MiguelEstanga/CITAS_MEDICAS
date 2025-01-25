@@ -1,133 +1,169 @@
-
-    <div class="">
-        <h4 class="alert" style="text-align: center;" >Detalle del Odontograma</h4>
-        <div id="odontograma-container">
-            <div id="odontograma">
-                <!-- Se generan los 32 dientes dinámicamente -->
-            </div>
-        </div>
+<div>
+    <h4 class="alert" style="text-align: center;">Detalle del Odontograma</h4>
+</div>
+<div class="Container_detalle_odontograma">
+ 
+    <div id="odontograma-container">
+        <div id="odontograma"></div>
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const dientes = 32;
-            const odontogramaContainer = document.getElementById("odontograma");
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dientes = 32;
+        const odontogramaContainer = document.getElementById("odontograma");
 
-            // 1. Generar la estructura básica de los 32 dientes
-            for (let i = 1; i <= dientes; i++) {
-                const diente = document.createElement("div");
-                diente.classList.add("diente");
-                diente.setAttribute("data-id", i);
+        for (let i = 1; i <= dientes; i++) {
+            const diente = document.createElement("div");
+            diente.classList.add("diente");
+            diente.setAttribute("data-id", i);
 
-                // Mostrar el número del diente
-                const numero = document.createElement("div");
-                numero.classList.add("numero-diente");
-                numero.innerText = i;
-                diente.appendChild(numero);
+            const numero = document.createElement("div");
+            numero.classList.add("numero-diente");
+            numero.innerText = i;
+            diente.appendChild(numero);
 
-                // Crear 5 partes: central, superior, inferior, izquierda, derecha
-                ["central", "superior", "inferior", "izquierda", "derecha"].forEach((parte) => {
-                    const seccion = document.createElement("div");
-                    seccion.classList.add("seccion", parte);
-                    seccion.setAttribute("data-parte", parte);
-                    seccion.setAttribute("data-diente", i);
-                    diente.appendChild(seccion);
-                });
+            ["central", "superior", "inferior", "izquierda", "derecha"].forEach((parte) => {
+                const seccion = document.createElement("div");
+                seccion.classList.add("seccion", parte);
+                seccion.setAttribute("data-parte", parte);
+                seccion.setAttribute("data-diente", i);
+                diente.appendChild(seccion);
+            });
 
-                odontogramaContainer.appendChild(diente);
-            }
+            odontogramaContainer.appendChild(diente);
+        }
 
-            // 2. Recuperar el JSON de la BD (ya lo pasamos desde el controlador)
-            const dataOdontograma = @json($odontograma);
-            console.log(dataOdontograma);
-            // 3. Recorrer ca da diente y cada parte para aplicar el color guardado
-            for (const tooth in dataOdontograma) {
-                for (const part in dataOdontograma[tooth]) {
-                    const color = dataOdontograma[tooth][part];
+        const dataOdontograma = @json($odontograma);
+        console.log(dataOdontograma);
 
-                    // Encontrar la sección correspondiente en el DOM
-                    const selector = `.seccion[data-diente='${tooth}'][data-parte='${part}']`;
-                    const sectionElement = document.querySelector(selector);
+        for (const tooth in dataOdontograma) {
+            for (const part in dataOdontograma[tooth]) {
+                const color = dataOdontograma[tooth][part];
+                const selector = `.seccion[data-diente='${tooth}'][data-parte='${part}']`;
+                const sectionElement = document.querySelector(selector);
 
-                    // Si existe esa parte del diente, colorearla
-                    if (sectionElement) {
-                        sectionElement.style.backgroundColor = color;
-                    }
+                if (sectionElement) {
+                    sectionElement.style.backgroundColor = color;
                 }
             }
-        });
-    </script>
-
-    <style>
-        /* Contenedor principal */
-        #odontograma-container {
-            text-align: center;
-            margin: 20px 0;
         }
+    });
+</script>
 
-        /* Grid de 16 columnas para 32 dientes en 2 filas */
-        #odontograma {
-            display: grid;
-            grid-template-columns: repeat(16, 60px);
-            gap: 10px;
-            justify-content: center;
-        }
+<style>
+    h4{
+        margin: auto;
+    }
+ .Container_detalle_odontograma {
+    width: 800px;
+   
+   
+   
+    margin: auto;
+    
+}
 
-        /* Cada diente */
-        .diente {
-            position: relative;
-            width: 50px;
-            height: 50px;
-            border: 1px solid #000;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+#odontograma-container {
+    text-align: center;
+    margin: 20px 0;
+}
 
-        /* Número del diente (arriba) */
-        .numero-diente {
-            position: absolute;
-            top: -15px;
-            font-size: 12px;
-            font-weight: bold;
-            color: black;
-        }
+#odontograma {
+    display: grid;
+    grid-template-columns: repeat(18, 40px); /* 18 columnas */
+    gap: 10px;
+    justify-content: center; /* Centrar los elementos */
+}
 
-        /* Secciones del diente */
-        .seccion {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 1px solid #666;
-            box-sizing: border-box;
-        }
+.diente {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin: 10px 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    box-sizing: border-box;
+    background: black;
+    transition: transform 0.3s ease;
+}
 
-        /* PARTE CENTRAL (círculo) */
-        .central {
-            clip-path: circle(25% at 50% 50%);
-            z-index: 5;
-        }
+.diente:hover {
+    transform: scale(1.1);
+}
 
-        /* PARTE SUPERIOR (triángulo) */
-        .superior {
-            clip-path: polygon(0 0, 100% 0, 50% 50%);
-        }
+.numero-diente {
+    position: absolute;
+    top: -20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    width: 100%;
+    z-index: 10;
+}
 
-        /* PARTE INFERIOR (triángulo) */
-        .inferior {
-            clip-path: polygon(0 100%, 100% 100%, 50% 50%);
-        }
+.seccion {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-sizing: border-box;
+}
 
-        /* PARTE IZQUIERDA (triángulo) */
-        .izquierda {
-            clip-path: polygon(0 0, 0 100%, 50% 50%);
-        }
+.central {
+    clip-path: circle(25% at 50% 50%);
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.7);
+}
 
-        /* PARTE DERECHA (triángulo) */
-        .derecha {
-            clip-path: polygon(100% 0, 100% 100%, 50% 50%);
-        }
-    </style>
+.superior {
+    clip-path: polygon(0 0, 100% 0, 50% 50%);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.inferior {
+    clip-path: polygon(0 100%, 100% 100%, 50% 50%);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.izquierda {
+    clip-path: polygon(0 0, 0 100%, 50% 50%);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.derecha {
+    clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 768px) {
+    .diente {
+        width: 40px;
+        height: 40px;
+    }
+    .numero-diente {
+        top: -15px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .diente {
+        width: 35px;
+        height: 35px;
+    }
+    .numero-diente {
+        top: -12px;
+        font-size: 0.6rem;
+    }
+}
+
+  
+  </style>
+  
 

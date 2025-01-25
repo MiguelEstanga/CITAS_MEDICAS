@@ -14,9 +14,13 @@ class UserSeederRole extends Seeder
         // Crear el usuario
         $userId = DB::table('users')->insertGetId([
             'name' => 'Super Admin',
-            'email' => 'superadmin@example.com',
+            'email' => 'valentina@example.com',
             'last_name' => 'Super Admin',
             'password' => Hash::make('12345678'), // Cambia esto por una contraseña segura
+            'avatar' => 'sistema/avatar.jpg',
+            'cedula' => '123456789',
+            'edad' => 30,
+            'telefono' => '123456789',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

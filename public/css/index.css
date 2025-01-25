@@ -33,7 +33,7 @@ thead tr th{
 }
 
 tbody tr td{
-  background: var(--color_tabla_td)!important;
+  background: #fff!important;
   color: black!important;
   text-align: center!important;
   border-bottom:none;
@@ -56,10 +56,14 @@ tbody tr td{
 }
 
 .table-container{
+ 
   background:  var(--color_primario);
   border-radius: 5px;
-  padding:10px 0;
+  padding:15px ;
+  overflow-y: scroll;
 }
+
+
 
 .table-container_show{
   background:  var(--color_primario);
@@ -78,6 +82,11 @@ tbody tr td{
 }
 .nav-item.active {
   background-color: #495057;
+  background-color: #eeeeef;
+  color: black !important;
+  
+  width: 127%;
+  border-radius: 20px;
 }
 
 #sidebar.active {

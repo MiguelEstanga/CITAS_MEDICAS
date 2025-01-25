@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('diagnostico');
             $table->string('observacion');
             $table->string('fecha');
+           
+            $table->string('a_cuenta');
             $table->integer('total');
-            $table->integer('a_cuenta');
             $table->integer('saldo');
             $table->boolean('cancelado')->default(false);
             $table->timestamps();

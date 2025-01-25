@@ -15,10 +15,13 @@ use App\Http\Controllers\PanelController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\PresupuestoController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\ServiciosController;
+use App\Http\Controllers\VentaController;
 Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::post('/generar-pdf', [ReporteController::class, 'generarPdf'])->name('generar_pdf');
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -28,6 +31,10 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('/', [PanelController::class, 'index'])->name('panel.index');
       //para el doctor
       Route::post('/precio_consulta', [PanelController::class, 'guardar_precio_citas'])->name('panel.precio_citas');
+     
+  });
+  Route::prefix('estadisticas')->group(function () {
+      Route::get('/', [PanelController::class, 'estadisticas'])->name('estadisticas.index');
   });
   //rutas de usuario para administrador
   Route::prefix('admin')->group(function () {
@@ -117,6 +124,32 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/reporte_inventario', [ReporteController::class, 'reporte_inventario'])->name('reportes.reporte_inventario');
     Route::get('/reporte_medicamentos', [ReporteController::class, 'reporte_medicamentos'])->name('reportes.reporte_medicamentos');
     Route::get('/reporte_usuario', [ReporteController::class, 'reporte_usuarios'])->name('reportes.reporte_usuario');
+    Route::get('/reporte_ventas', [ReporteController::class, 'reporte_ventas'])->name('reportes.reporte_ventas');
     
   });
+
+  Route::prefix('servicios')->group(function () {
+    Route::get('/', [ServiciosController::class, 'index'])->name('servicios.index');
+    Route::post('/', [ServiciosController::class, 'store'])->name('servicios.store');
+    Route::put('actulizar', [ServiciosController::class, 'update'])->name('servicios.udate');
+    Route::get('servicios/{items}', [ServiciosController::class , 'item'])->name('servicios.edit');
+    Route::get('borrar/{id}', [ServiciosController::class , 'destroy'])->name('servicios.delete');
+  });
+
+  Route::prefix('usuarios')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('usuarios.index');
+    Route::post('/', [UserController::class, 'store'])->name('usuarios.store');
+    Route::put('actulizar', [UserController::class, 'update'])->name('usuarios.udate');
+    Route::get('usuarios/{items}', [UserController::class , 'item'])->name('usuarios.edit');
+    Route::post('borrar/{items}', [UserController::class , 'destroy'])->name('usuarios.delete');
+  });
+
+  Route::prefix('venta')->group(function () {
+    Route::post('/', [VentaController::class, 'store'])->name('venta.store');
+    Route::get('/', [VentaController::class, 'index'])->name('venta.index');
+    Route::get('/eliminar/{id}', [VentaController::class, 'destroy'])->name('venta.destroy');
+    Route::put('/actualizar', [VentaController::class, 'update'])->name('venta.update');
+  });
+
+ 
 });
