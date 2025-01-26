@@ -7,12 +7,16 @@
     'iconLeft' => null,
     'iconRight' => null,
     'value' => null,
-    'id' => null,
+    'id' => '-1',
+    'id_label' => '-1',
 ])
 
 <div class="input">
   <label for="{{$name}}" class="form-label ">
     {{$label}} <span style="color: red">{{$required ? "*" : ""}}</span>
+  </label>
+  <label for="{{$name}}" class="form-label " id="{{$id_label}}" style="display: none;">
+   
   </label>
   <div class="input-group">
     @if($iconLeft)
@@ -20,8 +24,8 @@
         <i class="{{$iconLeft}}"></i>
       </span>
     @endif
-    <input  {{ $required ? 'required' : '' }} name="{{$name}}" type="{{$type}}" class="form-control" id="{{$name}}" placeholder="{{$placeholder}}"  value="{{$value ?? ''}}">
-    
+    <input  {{ $required ? 'required' : '' }} name="{{$name}}" type="{{$type}}" class="form-control" id="{{$name}}" placeholder="{{$placeholder}}"  value="{{$value ?? ''}}" id="{{$id}}" >
+ 
     <!-- Slot para ícono -->
     @if($type === 'password')
       <button class="btn btn-outline-secondary toggle-password" type="button">

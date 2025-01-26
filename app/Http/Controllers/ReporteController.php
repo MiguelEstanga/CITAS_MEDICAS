@@ -10,6 +10,7 @@ use Dompdf\Options;
 use App\Models\Inventario;
 use App\Models\User;
 use App\Models\Venta;
+use App\Models\Presupuesto;
 class ReporteController extends Controller
 {
     public static function Pdf($data)
@@ -144,6 +145,19 @@ class ReporteController extends Controller
                 'fecha_inicio' => $request->fecha_inicio,
                 'fecha_fin' => $request->fecha_fin,
                 'registroDias' => $registroDias
+            ]
+        ]);
+    }
+
+    public function presupuesto_reporte($id){
+        $usuario = User::find($id);
+         $usuario->presupuestos;
+
+         return self::Pdf([
+            'view' => 'pdf.presupuesto',
+            'var' => [
+                'presupuesto' =>  $usuario->presupuestos,
+                'user' => $usuario,
             ]
         ]);
     }

@@ -10,12 +10,42 @@ use Exception;
 
 class UserController extends Controller
 {
-    public function index()
+    public function verificacion($email)
     {
-        $administrador =  User::role('administrador')->get();
+        try {
+            $user = User::where('email', $email)->exists();
+            if ($user) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Usuario verificado exitosamente',
+                    'data' => $user,
+                ]);
+            }
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no verificado',
+                'data' => $user,
+            ]);
+        } catch (Exception $e) {
+            Log::info($e);
+            return back()->with('error', 'Usuario no encontrado');
+        }
+    }
+    public function index($type)
+    {
+        $role = DB::table('roles')->get();
+        $usuarios =  User::role('administrador')->get();
+        if ($type === 'paciente') {
+            $usuarios =  User::role('paciente')->get();
+        } else {
+            $usuarios = User::whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'paciente');
+            })->get();
+        }
         return view('pacientes.index', [
-            'pacientes' => $administrador,
-            'type' => 'usuario'
+            'pacientes' => $usuarios,
+            'type' => $type,
+            'roles' => $role
         ]);
     }
 
@@ -84,28 +114,53 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
-        $user = User::find($id);
-
-        // Verificar si el correo electrónico ya está en uso, pero excluir el usuario actual
+        $user = User::findOrFail($request->id);
        
-
-        // Si se ha subido una nueva imagen
+       
+       
+        // Verificar si se ha subido una nueva imagen
         if ($request->hasFile('imagen')) {
-            // Almacenar la imagen y actualizar el campo avatar
+            // Almacenar la imagen en el almacenamiento (storage) y guardar la ruta
             $filePath = $request->file('imagen')->store('images', 'public');
-            $user->avatar = $filePath;
-        }
+
+            $user->avatar =  $filePath; // Ajustar ruta para accesibilidad
+        } 
 
         // Actualizar los demás campos
         $user->name = $request->input('name');
-     //   $user->email = $request->input('email');
         $user->telefono = $request->input('telefono');
         $user->cedula = $request->input('cedula');
         $user->edad = $request->input('edad');
 
-        // Guardar los cambios
+        // Eliminar el rol actual del usuario
+        $user->roles()->detach();
+
+        $roleName = \Spatie\Permission\Models\Role::where('id', $request->input('role'))->value('name');
+
+        // Asignar el nuevo rol
+        $user->assignRole($roleName);
+
+        // Guardar los cambios del usuario
         $user->save();
 
         return back()->with('success', 'Usuario actualizado exitosamente');
+    }
+
+
+    public function destroy($id)
+    {
+        try {
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json(['success' => false, 'message' => 'Usuario no encontrado'], 404);
+            }
+
+            $user->delete();
+
+            return response()->json(['success' => true, 'message' => 'Usuario eliminado exitosamente']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al eliminar el usuario'], 500);
+        }
     }
 }

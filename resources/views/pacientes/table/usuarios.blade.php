@@ -27,10 +27,8 @@
                     <td>{{ $user->cedula }}</td>
                     <td>{{ $user->telefono }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->roles->first()->name }}</td>
-
+                    <td>{{ $user->roles->first()->name ?? 'n/a' }}</td>
                     <td class=" flex justify-center gap-2">
-
                         @if ($type === 'paciente')
                             <a class="pointer" href="{{ route('historia-medica.index', [$user->id, 'paciente']) }}">
                                 {!! iconos('historia') !!}
@@ -39,9 +37,10 @@
                         <a class="pointer btn-edit" data-id="{{ $user->id }}" data-name="{{ $user->name }}"
                             data-cedula="{{ $user->cedula }}" data-edad="{{ $user->edad }}"
                             data-telefono="{{ $user->telefono }}" data-email="{{ $user->email }}"
-                            data-rol="{{ $user->roles->first()->name }}" href="javascript:void(0)">
+                            data-rol="{{ $user->roles->first()->id ?? '-1' }}" href="javascript:void(0)">
                             {!! iconos('edit') !!}
                         </a>
+
                         <a class="pointer btn-delete" data-id="{{ $user->id }}">
                             {!! iconos('delete') !!}
                         </a>
@@ -56,7 +55,8 @@
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form id="editUserForm" method="post"  action="{{ route('usuarios.udate' , $user->id) }}"  enctype="multipart/form-data" >
+                    <form id="editUserForm" method="post"
+                        action="{{ route('usuarios.udate', $usuarios->id ?? '-1') }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="modal-header">
@@ -70,7 +70,6 @@
                                 <label for="editUserName" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="editUserName" name="name" required>
                             </div>
-                         
                             <div class="mb-3 input">
                                 <label for="editUserCedula" class="form-label">Cédula</label>
                                 <input type="text" class="form-control" id="editUserCedula" name="cedula" required>
@@ -84,15 +83,14 @@
                                 <input type="text" class="form-control" id="editUserTelefono" name="telefono"
                                     required>
                             </div>
+                            <x-input_select name="role" :required="true" label="Rol" :options="$roles" id="role" />
                             <!--div class="mb-3 input">
                                 <label for="editUserEmail" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="editUserEmail" name="email" required>
                             </div-->
-                            <div class="mb-3 input">
-                                <label for="editUserEmail" class="form-label">Email</label>
+                            <div class="mb-3 ">
                                 <x-input_file label="Subir imagen" name="imagen" />
                             </div>
-                            <x-input_select name="role" :required="true" label="Rol" :options="['4' => 'Administrador', '2' => '', '3' => 'paciente']" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -120,15 +118,15 @@
         $(document).ready(function() {
             // Acción para abrir el modal de edición con los datos cargados
             $('#userTable').on('click', '.btn-edit', function() {
-                const row = $(this).closest('tr');
-                const id = row.find('td:eq(0)').text();
-                const name = row.find('td:eq(2)').text();
-                const cedula = row.find('td:eq(3)').text();
-                const edad = row.find('td:eq(4)').text();
-                const telefono = row.find('td:eq(5)').text();
-                const email = row.find('td:eq(6)').text();
-                const rol = row.find('td:eq(7)').text();
-
+                // Obtener los datos del usuario desde los atributos data-* del botón
+                const id = $(this).data('id');
+                const name = $(this).data('name');
+                const cedula = $(this).data('cedula');
+                const edad = $(this).data('edad');
+                const telefono = $(this).data('telefono');
+                const email = $(this).data('email');
+                const rol = $(this).data('rol'); // Rol actual del usuario
+              
                 // Llenar el modal con los datos del usuario
                 $('#editUserId').val(id);
                 $('#editUserName').val(name);
@@ -136,7 +134,9 @@
                 $('#editUserEdad').val(edad);
                 $('#editUserTelefono').val(telefono);
                 $('#editUserEmail').val(email);
-                $('#editUserRol').val(rol);
+
+                // Configurar el valor seleccionado del select basado en el rol
+                $('#role').val(rol).change();
 
                 // Abrir el modal
                 $('#editUserModal').modal('show');
@@ -144,9 +144,8 @@
 
             // Acción para confirmar eliminación
             $('#userTable').on('click', '.btn-delete', function() {
-                const row = $(this).closest('tr');
-                const id = row.find('td:eq(0)').text();
-                const name = row.find('td:eq(2)').text();
+                const id = $(this).data('id');
+                const name = $(this).closest('tr').find('td:eq(2)').text();
 
                 Swal.fire({
                     title: `¿Está seguro de eliminar a ${name}?`,
@@ -156,17 +155,14 @@
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
+                    cancelButtonText: 'Cancelar',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Realizar solicitud AJAX para eliminar usuario
+                        const url = `{{ route('usuarios.delete', ':id') }}`.replace(':id', id);
+
                         $.ajax({
-                            url: ``, // Cambia la ruta si es necesario
-                            method: 'POST',
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                id: id
-                            },
+                            url: url,
+                            method: 'GET',
                             success: function(response) {
                                 if (response.success) {
                                     Swal.fire(
@@ -177,20 +173,15 @@
                                         location.reload();
                                     });
                                 } else {
-                                    Swal.fire(
-                                        'Error',
-                                        'No se pudo eliminar el usuario.',
-                                        'error'
-                                    );
+                                    Swal.fire('Error',
+                                        'No se pudo eliminar el usuario.', 'error');
                                 }
                             },
                             error: function() {
-                                Swal.fire(
-                                    'Error',
+                                Swal.fire('Error',
                                     'Ocurrió un error al intentar eliminar el usuario.',
-                                    'error'
-                                );
-                            }
+                                    'error');
+                            },
                         });
                     }
                 });

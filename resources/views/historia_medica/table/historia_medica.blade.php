@@ -1,6 +1,8 @@
 <table id="historiaTable" class="table  " style="width:100% ; position: relative;">
-    <div class="h4 historia_medica">
-        Historia Medica
+   
+    <div class="h4 historia_medica d-flex justify-content-between align-items-center gap-2 mb-4">
+        Historia Medica 
+     
     </div>
     <thead>
         <tr>

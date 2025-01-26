@@ -8,6 +8,9 @@
         <div class="paciente-info">
             <span class="name">Paciente</span>: {{ $usuario->name }} {{ $usuario->last_name }}
         </div>
+        <div>
+            
+        </div>
         <div class="p-2">
             @include('historia_medica.table.usuario_table_show')
         </div>
@@ -56,7 +59,12 @@
 
         </form>
     </div>
-
+    <div class="" style="display:felx; flex-direction: row; gap: 10px;">
+        <div>
+            <a class="btn btn-danger"  href="{{route('reporte.presupuesto' , $id_usuario)}}" target="blank">Generar PDF</a>
+        </div>
+        
+    </div>
     <div class="table-container_show sombra" style="position: relative;">
         <div class="p-2">
             @include('historia_medica.table.historia_medica')

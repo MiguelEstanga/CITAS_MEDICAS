@@ -5,50 +5,45 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RoleSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     public function run()
     {
-        $roles = [
+        $permissions = [
+            // Permisos para administrador
             [
-                'name' => 'superusuario',
+                'name' => 'v_asistente_general',
+                'guard_name' => 'web',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Permisos para supervisor
+            [
+                'name' => 'v_asistente_dental',
                 'guard_name' => 'web',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'doctor',
+                'name' => 'v_asistente_medico',
                 'guard_name' => 'web',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'paciente',
+                'name' => 'v_superusuario',
                 'guard_name' => 'web',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'administrador',
-                'guard_name' => 'web',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Asistente General',
-                'guard_name' => 'web',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Asistente Dental',
+                'name' => 'v_admnistrador',
                 'guard_name' => 'web',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ];
 
-        DB::table('roles')->insert($roles);
-        
+        DB::table('permissions')->insert($permissions);
     }
 }

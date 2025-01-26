@@ -6,6 +6,7 @@
     <div class="ml-3">
         <h5 class="mb-0">{{ $user->name }}</h5>
         <p class="mb-0">{{ $user->email }}</p>
+        <p class="mb-0">{{ $user->roles->first()->name }}</p>
     </div>
 </div>
 

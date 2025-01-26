@@ -23,7 +23,12 @@ body {
 a{
   text-decoration: none!important;
 }
-
+.is-valid{
+  border-color: green!important;
+}
+.is-invalid{
+  border-color: red!important;
+}
 
 thead tr th{
   background: var(--color_menu)!important;

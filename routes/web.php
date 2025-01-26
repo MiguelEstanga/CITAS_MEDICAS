@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HistoriaController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\EventosCalendarController;
-use App\Http\Controllers\DoctorController;
+
 use App\Http\Controllers\PacientesController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\PanelController;
@@ -22,6 +22,7 @@ Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/generar-pdf', [ReporteController::class, 'generarPdf'])->name('generar_pdf');
+Route::get('reporte/historia/{id}' , [ReporteController::class, 'presupuesto_reporte'])->name('reporte.presupuesto');
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -31,14 +32,13 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('/', [PanelController::class, 'index'])->name('panel.index');
       //para el doctor
       Route::post('/precio_consulta', [PanelController::class, 'guardar_precio_citas'])->name('panel.precio_citas');
-     
   });
   Route::prefix('estadisticas')->group(function () {
       Route::get('/', [PanelController::class, 'estadisticas'])->name('estadisticas.index');
   });
   //rutas de usuario para administrador
   Route::prefix('admin')->group(function () {
-    Route::get('/usuarios', [UserController::class, 'index'])->name('admin.user.index');
+    Route::get('/usuarios/{type}', [UserController::class, 'index'])->name('admin.user.index');
     Route::post('/usuarios', [UserController::class, 'store'])->name('admin.user.store');
     Route::get('/usuarios-edit/{id}', [UserController::class, 'edit'])->name('admin.user.edit');
     Route::post('/usuarios-update/{id}', [UserController::class, 'update'])->name('admin.user.update');
@@ -64,15 +64,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/eventos/delete/{id}', [EventosCalendarController::class, 'destroy']);
   });
 
-  Route::prefix('lista_pacientes')->group(function () {
-    Route::get('/', [DoctorController::class, 'pacientes'])->name('pacientes.index');
-    Route::post('/agregar_paciente', [DoctorController::class, 'agregar_paciente'])->name('pacientes.agregar_paciente');//no esta en uso 
-    Route::post('/quitar_paciente', [DoctorController::class, 'quitar_paciente'])->name('pacientes.quitar_paciente');
-   
-  });
+
 
   Route::prefix('solicitudes')->group(function () {
-    Route::get('/doctor', [DoctorController::class, 'solicitud'])->name('doctores.ver_solicitud');
+  
     
     //solicitud de respuesta
     Route::get('/responder/{id_solicitud}', [SolicitudController::class, 'responder_solicitud'])->name('doctores.responder_solicitud');
@@ -137,11 +132,16 @@ Route::group(['middleware' => ['auth']], function () {
   });
 
   Route::prefix('usuarios')->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('usuarios.index');
-    Route::post('/', [UserController::class, 'store'])->name('usuarios.store');
+    Route::get('/{type}', [UserController::class, 'index'])->name('usuarios.index');
+    Route::post('registrar/', [UserController::class, 'store'])->name('usuarios.store');
     Route::put('actulizar/{id}', [UserController::class, 'update'])->name('usuarios.udate');
     Route::get('usuarios/{items}', [UserController::class , 'item'])->name('usuarios.edit');
-    Route::post('borrar/{items}', [UserController::class , 'destroy'])->name('usuarios.delete');
+    Route::get('borrar/{id}', [UserController::class, 'destroy'])->name('usuarios.delete');
+
+  });
+
+  Route::prefix('pacientes')->group(function () {
+    Route::get('/{type}', [UserController::class, 'index'])->name('usuarios.pacientes');
   });
 
   Route::prefix('venta')->group(function () {
@@ -152,4 +152,9 @@ Route::group(['middleware' => ['auth']], function () {
   });
 
  
+
+  //api
+  Route::prefix('api')->group(function () {
+    Route::get('/verificacion/{email}', [UserController::class, 'verificacion'])->name('api.verificacion');
+  });
 });

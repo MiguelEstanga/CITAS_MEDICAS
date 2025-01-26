@@ -22,7 +22,7 @@
             align-items: center;
             height: 100vh;
             padding: 1rem;
-            background:#b29212;
+            background:var(--color_menu);
         }
 
         .container.formulario-login {
