@@ -84,10 +84,10 @@
                                 <input type="text" class="form-control" id="editUserTelefono" name="telefono"
                                     required>
                             </div>
-                            <div class="mb-3 input">
+                            <!--div class="mb-3 input">
                                 <label for="editUserEmail" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="editUserEmail" name="email" required>
-                            </div>
+                            </div-->
                             <div class="mb-3 input">
                                 <label for="editUserEmail" class="form-label">Email</label>
                                 <x-input_file label="Subir imagen" name="imagen" />
