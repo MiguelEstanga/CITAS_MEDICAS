@@ -91,7 +91,7 @@
                     <form id="editUserForm" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editUserModalLabel">Editar Usuario</h5>
+                            <h5 class="modal-title" id="editUserModalLabel">Editar Usuariosss</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>

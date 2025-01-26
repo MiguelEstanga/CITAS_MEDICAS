@@ -21,17 +21,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Validar los datos de entrada
-        /** 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|exists:roles,id',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validar imagen opcional
-        ]);*/
-
+       
         // Crear una nueva instancia de User
         $user = new User();
       
@@ -94,16 +84,17 @@ class UserController extends Controller
     }
 
     public function update( $id , Request $request){
+       
         $user = User::find($id);
         if(  $request->hasFile('imagen')){
             $filePath = $request->file('imagen')->store('images' , 'public');
             $user->avatar =  $filePath;
-
         }
         $user->name = $request->input('name');
-        $user->last_name = $request->input('last_name');
+     
         $user->email = $request->input('email');
         $user->telefono = $request->input('telefono');
+
         $user->cedula = $request->input('cedula');
         $user->edad = $request->input('edad');
         $user->save();

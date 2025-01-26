@@ -56,8 +56,9 @@
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form id="editUserForm" method="POST">
+                    <form id="editUserForm" method="post"  action="{{ route('usuarios.udate' , $user->id) }}"  enctype="multipart/form-data" >
                         @csrf
+                        @method('put')
                         <div class="modal-header">
                             <h5 class="modal-title" id="editUserModalLabel">Editar Usuario</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -69,6 +70,7 @@
                                 <label for="editUserName" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="editUserName" name="name" required>
                             </div>
+                         
                             <div class="mb-3 input">
                                 <label for="editUserCedula" class="form-label">Cédula</label>
                                 <input type="text" class="form-control" id="editUserCedula" name="cedula" required>
@@ -87,9 +89,10 @@
                                 <input type="email" class="form-control" id="editUserEmail" name="email" required>
                             </div>
                             <div class="mb-3 input">
-                                <label for="editUserRol" class="form-label">Rol</label>
-                                <input type="text" class="form-control" id="editUserRol" name="rol" required>
+                                <label for="editUserEmail" class="form-label">Email</label>
+                                <x-input_file label="Subir imagen" name="imagen" />
                             </div>
+                            <x-input_select name="role" :required="true" label="Rol" :options="['4' => 'Administrador', '2' => '', '3' => 'paciente']" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

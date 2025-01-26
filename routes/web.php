@@ -139,7 +139,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::prefix('usuarios')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('usuarios.index');
     Route::post('/', [UserController::class, 'store'])->name('usuarios.store');
-    Route::put('actulizar', [UserController::class, 'update'])->name('usuarios.udate');
+    Route::put('actulizar/{id}', [UserController::class, 'update'])->name('usuarios.udate');
     Route::get('usuarios/{items}', [UserController::class , 'item'])->name('usuarios.edit');
     Route::post('borrar/{items}', [UserController::class , 'destroy'])->name('usuarios.delete');
   });
