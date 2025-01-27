@@ -40,7 +40,10 @@ class UserController extends Controller
         } else {
             $usuarios = User::whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'paciente');
-            })->get();
+            })
+            ->where('id', '!=', 1) // Excluir al usuario con ID 1
+            ->get();
+
         }
         return view('pacientes.index', [
             'pacientes' => $usuarios,
