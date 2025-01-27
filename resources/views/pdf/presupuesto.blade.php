@@ -69,7 +69,7 @@
         <img src="logo.png" alt="Logo de la Empresa">
         
     </header>
-    <h1>Lista de Inventario de {{$user->name}} {{$user->last_name}}</h1>
+    <h1>Ficha Odontològica de  {{$user->name}} {{$user->last_name}}</h1>
 
 
 
