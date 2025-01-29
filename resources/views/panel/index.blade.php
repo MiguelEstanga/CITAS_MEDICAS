@@ -3,18 +3,18 @@
 @section('content')
     <div class="content p-4 sombra">
         <div class="header">
-            <div class="imagen_baner">
-                <img src="{{ asset('storage/' . user()->avatar) ?? user_default() }}"
-                    alt="{{ asset('storage/' . user()->avatar) }}" width="200px" height="200px">
-            </div>
+          
         </div>
-        <form id="editUserForm" method="POST" action="{{ route('admin.user.update', user()->id) }}"
+        <form id="editUserForm" method="POST" action="{{ route('usuarios.udate', user()->id) }}"
             enctype="multipart/form-data">
             @csrf
+            @method('put')
 
             <div class="modal-body">
                 <input type="hidden" id="editUserId" name="id">
+                <input type="hidden" id="editUserId" name="role" value="1">
                 <x-input_file label="" name="imagen" />
+                <input type="hidden" name="id" value="{{ user()->id }}">
                 <div class="mb-3 input">
                     <label for="editUserName" class="form-label">Nombre</label>
                     <input type="text" class="form-control" id="editUserName" name="name" value="{{ user()->name }}"

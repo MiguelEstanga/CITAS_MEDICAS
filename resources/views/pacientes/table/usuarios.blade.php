@@ -8,12 +8,12 @@
                 <th>N</th>
                 <th>Paciente</th>
                 <th>Nombre</th>
-                <th>Cedula</th>
+                <th>Cédula</th>
                 <th>Edad</th>
-                <th>Telefono</th>
+                <th>Teléfono</th>
                 <th>Email</th>
                 <th>Rol</th>
-                <th>Aciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>

@@ -1,15 +1,17 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Clinica Odontologica</title>
     <link href="{{ asset('css/index.css') }}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
@@ -26,78 +28,63 @@
                 <!-- Panel principal -->
                 <li class="nav-item {{ request()->segment(1) == 'panel' ? 'active' : '' }}">
                     <a class="nav-link {{ request()->segment(1) == 'panel' ? 'active' : '' }}"
-                       href="{{ route('panel.index') }}">Panel</a>
+                        href="{{ route('panel.index') }}">Panel</a>
                 </li>
 
-                <!-- Menú Desplegable: Citas -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {{ in_array(request()->segment(1), ['pacientes','usuarios','agenda']) ? 'active' : '' }}"
-                       href="#"
-                       id="navbarCitas"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                       Citas
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarCitas" style="background-color: var(--color_menu);">
-                        @can('v_asistente_general')
-                            <li>
-                                <a class="dropdown-item text-white {{ request()->segment(1) == 'pacientes' ? 'active' : '' }}"
-                                   href="{{ route('usuarios.pacientes', 'paciente') }}"
-                                   style="background-color: inherit;">
-                                    Lista de pacientes
-                                </a>
-                            </li>
-                        @endcan
 
-                        @can('v_asistente_general')
-                            <li>
-                                <a class="dropdown-item text-white {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"
-                                   href="{{ route('usuarios.index', 'usuario') }}"
-                                   style="background-color: inherit;">
-                                    Lista de usuarios
-                                </a>
-                            </li>
-                        @endcan
+                @can('v_asistente_general')
+                    <li
+                        class="nav-item  {{ request()->segment(1) == 'pacientes' ? 'active' : '' }}"
+                    >
+                        <a class="nav-link text-white {{ request()->segment(1) == 'pacientes' ? 'active' : '' }}"
+                            href="{{ route('usuarios.pacientes', 'paciente') }}" style="background-color: inherit;">
+                           Pacientes
+                        </a>
+                    </li>
+                @endcan
 
-                        @can('v_admnistrador')
-                            <li>
-                                <a class="dropdown-item text-white {{ request()->segment(1) == 'agenda' ? 'active' : '' }}"
-                                   href="{{ route('agenda.index') }}"
-                                   style="background-color: inherit;">
-                                    Mi agenda
-                                </a>
-                            </li>
-                        @endcan
-                    </ul>
-                </li>
-                <!-- Fin menú desplegable Citas -->
+                @can('v_asistente_general')
+                    <li class="nav-item {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"">
+                        <a class="nav-link  text-white {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"
+                            href="{{ route('usuarios.index', 'usuario') }}" style="background-color: inherit;">
+                            Usuarios
+                        </a>
+                    </li>
+                @endcan
 
+                @can('v_admnistrador')
+                    <li class="nav-item {{ request()->segment(1) == 'agenda' ? 'active' : '' }} ">
+                        <a class="nav-link text-white {{ request()->segment(1) == 'agenda' ? 'active' : '' }}"
+                            href="{{ route('agenda.index') }}" style="background-color: inherit;">
+                           Citas
+                        </a>
+                    </li>
+                @endcan
                 @can('v_asistente_dental')
                     <li class="nav-item {{ request()->segment(1) == 'inventario' ? 'active' : '' }}">
                         <a class="nav-link {{ request()->segment(1) == 'inventario' ? 'active' : '' }}"
-                           href="{{ route('inventario.index') }}">Inventario</a>
+                            href="{{ route('inventario.index') }}">Inventario</a>
                     </li>
                 @endcan
 
                 @can('v_admnistrador')
                     <li class="nav-item {{ request()->segment(1) == 'servicios' ? 'active' : '' }}">
                         <a class="nav-link {{ request()->segment(1) == 'servicios' ? 'active' : '' }}"
-                           href="{{ route('servicios.index') }}">Servicios</a>
+                            href="{{ route('servicios.index') }}">Servicios</a>
                     </li>
                 @endcan
 
                 @can('v_admnistrador')
                     <li class="nav-item {{ request()->segment(1) == 'venta' ? 'active' : '' }}">
                         <a class="nav-link {{ request()->segment(1) == 'venta' ? 'active' : '' }}"
-                           href="{{ route('venta.index') }}">Ventas</a>
+                            href="{{ route('venta.index') }}">Ventas</a>
                     </li>
                 @endcan
 
                 @can('v_asistente_general')
                     <li class="nav-item {{ request()->segment(1) == 'estadisticas' ? 'active' : '' }}">
                         <a class="nav-link {{ request()->segment(1) == 'estadisticas' ? 'active' : '' }}"
-                           href="{{ route('estadisticas.index') }}">Estadísticas</a>
+                            href="{{ route('estadisticas.index') }}">Estadísticas</a>
                     </li>
                 @endcan
 
@@ -116,8 +103,7 @@
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.4.7/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous">
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <script>
         document.getElementById('menu-toggle').addEventListener('click', function() {
@@ -126,6 +112,7 @@
         });
     </script>
 </body>
+
 </html>
 
 <style>

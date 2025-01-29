@@ -136,8 +136,10 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
+     
+        
         $user = User::findOrFail($request->id);
-       
+      
        
        
         // Verificar si se ha subido una nueva imagen
@@ -146,11 +148,15 @@ class UserController extends Controller
             $filePath = $request->file('imagen')->store('images', 'public');
 
             $user->avatar =  $filePath; // Ajustar ruta para accesibilidad
-        } 
-
+            } 
+        if($request->input('last_name'))
+        {
+            $user->last_name = $request->input('last_name');
+        }
         // Actualizar los demás campos
         $user->name = $request->input('name');
         $user->telefono = $request->input('telefono');
+     
         $user->cedula = $request->input('cedula');
         $user->edad = $request->input('edad');
 

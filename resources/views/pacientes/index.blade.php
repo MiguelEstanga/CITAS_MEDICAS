@@ -6,7 +6,7 @@
     </div>
     <div class="mb-2">
         <div class="">
-            <button class="btn-default auto" data-bs-toggle="modal" data-bs-target="#modal1"> Crear nuevo usuario</button>
+            <button class="btn-default auto" data-bs-toggle="modal" data-bs-target="#modal1"> Crear nuevo  {{ $type === 'paciente' ? 'Paciente' : 'Usuario' }}</button>
         </div>
     </div>
     @if (session('error'))
