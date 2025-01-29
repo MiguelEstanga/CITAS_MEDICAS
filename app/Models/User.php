@@ -28,7 +28,10 @@ class User extends Authenticatable
         'edad',
         'telefono',
         'cedula',
-        'id_user'
+        'id_user',
+        'antecedentes_familiares',
+        'direccion'
+
     ];
 
     /**

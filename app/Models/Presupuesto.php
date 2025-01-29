@@ -15,7 +15,11 @@ class Presupuesto extends Model
         'a_cuenta',
         'saldo',
         'total',
-
+        'metodo_de_pago',
+       
+         'costo',
+         'abono',
+        'pagado',
         'cancelado'
     ];
     public function odontograma(){

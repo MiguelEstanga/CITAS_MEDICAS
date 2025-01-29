@@ -26,13 +26,13 @@
         }
 
         .container.formulario-login {
-            background-image:var(--color_fondo2);
+            background:var(--color_menu);
             max-width: 420px;
             width: 100%;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            box-shadow: #333 0px 0px 1px;
+            box-shadow: #000 0px 0px 1px;
         }
 
         /* Sección del logo o imagen */
@@ -122,12 +122,14 @@
                     action="{{ route('auth') }}">
                     @csrf
                     <div class=" ">
-                        <label for="email" class="mb-4">Email</label>
+                        <label for="email" class="mb-4 text-white">
+                            Email
+                        </label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="mb-4">
+                        <label for="password" class="mb-4 text-white">
                             Contraseña
                         </label>
                         <input type="password" name="password" class="form-control mt-1" id="password"

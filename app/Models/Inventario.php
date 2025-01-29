@@ -13,6 +13,12 @@ class Inventario extends Model
         'precio',
         'cantidad',
         'imagen',
-        'tipo_producto'
+        'tipo_producto',
+        'estado'
     ];
+
+    public function estado()
+    {
+        return EstadoInventario::find($this->estado)->name ?? '';
+    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Exception;
 
 class UserController extends Controller
@@ -54,8 +55,24 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|regex:/^[a-zA-Z\s]+$/|max:18',
+            'last_name' => 'required|regex:/^[a-zA-Z\s]+$/|max:18',
+            'direccion' => 'required|max:18',
+            'email' => 'required|email|unique:users,email',
+            'cedula' => 'required|numeric',
+            'edad' => 'required|numeric',
+            'telefono' => 'required|numeric',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-        // Crear una nueva instancia de User
+        if ($validator->fails()) {
+            return redirect()->back()
+                             ->withErrors($validator)
+                             ->withInput()
+                             ->with('error', 'Revise el formulario');
+        }
+        
         $user = new User();
 
         // Verificar si se ha subido una imagen
@@ -69,7 +86,7 @@ class UserController extends Controller
         }
 
 
-
+        
         // Asignar otros campos al modelo User
         $user->name = $request->input('name');
         $user->last_name = $request->input('last_name');
@@ -78,6 +95,8 @@ class UserController extends Controller
         $user->cedula = $request->input('cedula');
         $user->edad = $request->input('edad');
         $user->telefono = $request->input('telefono');
+        $user->antecedentes_familiares = $request->input('antecedentes') ?? null;
+        $user->direccion = $request->input('direccion') ?? null;
         // Guardar el usuario en la base de datos
         $user->save();
 

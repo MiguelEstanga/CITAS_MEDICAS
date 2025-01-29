@@ -1,0 +1,11 @@
+const puppeteer = require('puppeteer');
+
+(async () => {
+  const browser = await puppeteer.launch({
+    headless: false
+  });
+  const page = await browser.newPage();
+  await page.goto('https://example.com');
+  await page.pdf({ path: 'C:\\Users\\user\\Desktop\\citas_medica\\public\\example.pdf' });
+  await browser.close();
+})();

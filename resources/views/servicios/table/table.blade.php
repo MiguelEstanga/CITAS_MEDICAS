@@ -47,7 +47,7 @@
                 <th>Descripcion</th>
                 <th>Imagen</th>
                 <th>Precio</th>
-                <th>Aciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>

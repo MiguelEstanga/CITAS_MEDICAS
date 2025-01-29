@@ -57,17 +57,15 @@
         
     </header>
     <h1>Lista de Inventario del {{$fecha_inicio}} al {{$fecha_fin}}</h1>
-   
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nombre</th>
+                <th>N</th>
+                <th>Articulo</th>
                 <th>Descripción</th>
-                <th>precio</th>
+                <th>Precio en Bs</th>
                 <th>Cantidad</th>
                 <th>Imagen</th>
-                
             </tr>
         </thead>
         <tbody>

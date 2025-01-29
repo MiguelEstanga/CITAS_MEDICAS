@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::prefix('agenda')->group(function () {
     Route::get('/', [CitasController::class, 'index'])->name('agenda.index');
+    Route::post('destroy/{id}', [CitasController::class, 'destroy'])->name('agenda.destroy');
  
   });
   Route::prefix('eventos')->group(function () {
@@ -90,7 +91,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/', [InventarioController::class, 'store'])->name('inventario.store');
     Route::put('actulizar/{item_id}', [InventarioController::class, 'update'])->name('inventario.udate');
     Route::get('inventario/{items}', [InventarioController::class , 'item'])->name('inventario.edit');
-    Route::delete('borrar/{items}', [InventarioController::class , 'destroy'])->name('inventario.delete');
+    Route::post('borrar/{items}', [InventarioController::class , 'destroy'])->name('inventario.delete');
 
     Route::post('aumentar/{item_id}', [InventarioController::class, 'aumentar_cantidad'])->name('inventario.aumentar_cantidad');
   });
@@ -111,6 +112,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/{id}', [PresupuestoController::class, 'update'])->name('presupuesto.update');
     Route::post('/odontograma', [PresupuestoController::class, 'odontograma_store'])->name('presupuesto.odontograma_store');
     Route::get('presupuesto_pdf/{control_cita_id}', [PresupuestoController::class, 'persupuesto_pdf'])->name('presupuesto.persupuesto_pdf');
+    Route::post('/eliminar/{id}', [PresupuestoController::class, 'eliminar'])->name('presupuesto.eliminar');
     
   });
 

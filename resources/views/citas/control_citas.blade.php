@@ -119,7 +119,9 @@
 
         <button class=" btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#presupuesto"> Cargar presupuesto
         </button>
+       <div class="mb-4">
         <a href="{{ route('presupuesto.persupuesto_pdf' , $control_citas->id)}}" class="btn btn-outline-danger" >Generar PDF</a>
+       </div>
         <x-modal id="presupuesto" title="Cargar presupuesto">
             <div class="table-container">
                 <form action="{{ route('presupuesto.store') }}" method="POST" enctype="multipart/form-data">

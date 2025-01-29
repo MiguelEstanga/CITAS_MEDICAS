@@ -39,7 +39,7 @@
                             <input type="time" id="createEnd" name="hora_fin" class="form-control">
                         </div>
                         <input type="hidden" id="createSelectedColor" name="color" value="#FF5733">
-                      
+
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
@@ -84,11 +84,12 @@
                         </div>
 
 
-                      
+
                         <input type="hidden" id="editSelectedColor" name="color" value="#FF5733">
                         <!-- Default color -->
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" id="deleteEvent">Eliminar</button>
+                            <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
+
                             <button type="submit" class="btn btn-primary">Actualizar</button>
                         </div>
                     </form>
@@ -98,165 +99,197 @@
     </div>
 
     <script>
-       document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek',
-        locale: 'es',
-        timeZone: 'local',
-        editable: true, // importante para arrastrar y soltar
-        selectable: true,
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
-
-        // Ruta que devuelve los eventos en JSON
-        events: `{{ route('eventos.eventos', user()->id) }}`,
-
-        // Clic en un espacio vacío para crear evento
-        dateClick: function(info) {
-            const date = info.dateStr.split('T')[0];
-            const start = info.dateStr.split('T')[1];
-            $('#createDate').val(date);
-            $('#createStart').val(start.split('-')[0]);
-            $('#createEnd').val(start.split('-')[0]);
-            $('#createEventModal').modal('show');
-        },
-
-        // Clic en un evento existente para editar
-        eventClick: function(info) {
-            const start = info.event.start;
-            const end = info.event.end;
-            const startDate = start.toISOString().slice(0, 10);
-            const startTime = start.toLocaleTimeString('en-US', { hour12: false }).slice(0, 5);
-            const endTime = end ? end.toLocaleTimeString('en-US', { hour12: false }).slice(0, 5) : startTime;
-
-            $('#editEventModal').modal('show');
-            $('#editEventId').val(info.event.id);
-            $('#editTitle').val(info.event.title);
-            $('#editDate').val(startDate);
-            $('#editStart').val(startTime);
-            $('#editEnd').val(endTime);
-
-            const editRoute = `{{ route('eventos.update', '*') }}`.replace('*', info.event.id);
-            $('#editEventForm').attr('action', `${editRoute}`);
-        },
-
-        // ===== Nuevo: mover (arrastrar/soltar) un evento =====
-        eventDrop: function(info) {
-            // Obtener datos actualizados
-            const eventId = info.event.id;
-            const start = info.event.start;
-            const end = info.event.end || start; // si no hay hora de fin, se usa la misma de inicio
-
-            // Convertir fechas a cadenas ISO (o al formato que necesites)
-            const startISO = start.toISOString();
-            const endISO = end.toISOString();
-
-            // Aquí harás la llamada para actualizar en tu backend:
-            // Por ejemplo, si tienes una ruta tipo: /eventos/actualizar-fechas/{id}
-            fetch(`/eventos/actualizar-fechas/${eventId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                locale: 'es',
+                timeZone: 'Europe/Madrid',
+                editable: true,
+                selectable: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay' // Nombres originales en inglés
                 },
-                body: JSON.stringify({
-                    start: startISO,
-                    end: endISO
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    // revertir el movimiento si hay error
-                    info.revert();
-                    Swal.fire('Error', 'No se pudo actualizar el evento.', 'error');
-                } else {
-                    Swal.fire('Evento actualizado', 'Se ha cambiado la fecha/horario del evento.', 'success');
+                buttonText: { // Textos traducidos
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    prev: '<',
+                    next: '>'
+                },
+
+                // Ruta que devuelve los eventos en JSON
+                events: `{{ route('eventos.eventos', user()->id) }}`,
+
+                // Clic en un espacio vacío para crear evento
+                dateClick: function(info) {
+                    const date = info.dateStr.split('T')[0];
+                    const start = info.dateStr.split('T')[1];
+                    $('#createDate').val(date);
+                    $('#createStart').val(start.split('-')[0]);
+                    $('#createEnd').val(start.split('-')[0]);
+                    $('#createEventModal').modal('show');
+                },
+
+                // Clic en un evento existente para editar
+                eventClick: function(info) {
+                    const start = info.event.start;
+                    const end = info.event.end;
+                    const startDate = start.toISOString().slice(0, 10);
+                    const startTime = start.toLocaleTimeString('en-US', {
+                        hour12: false
+                    }).slice(0, 5);
+                    const endTime = end ? end.toLocaleTimeString('en-US', {
+                        hour12: false
+                    }).slice(0, 5) : startTime;
+
+                    $('#editEventModal').modal('show');
+                    $('#editEventId').val(info.event.id);
+                    $('#editTitle').val(info.event.title);
+                    $('#editDate').val(startDate);
+                    $('#editStart').val(startTime);
+                    $('#editEnd').val(endTime);
+
+                    const editRoute = `{{ route('eventos.update', '*') }}`.replace('*', info.event.id);
+                    $('#editEventForm').attr('action', `${editRoute}`);
+                },
+
+                // ===== Nuevo: mover (arrastrar/soltar) un evento =====
+                eventDrop: function(info) {
+                    // Obtener datos actualizados
+                    const eventId = info.event.id;
+                    const start = info.event.start;
+                    const end = info.event.end ||
+                        start; // si no hay hora de fin, se usa la misma de inicio
+
+                    // Convertir fechas a cadenas ISO (o al formato que necesites)
+                    const startISO = start.toISOString();
+                    const endISO = end.toISOString();
+
+                    // Aquí harás la llamada para actualizar en tu backend:
+                    // Por ejemplo, si tienes una ruta tipo: /eventos/actualizar-fechas/{id}
+                    fetch(`/eventos/actualizar-fechas/${eventId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                start: startISO,
+                                end: endISO
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.success) {
+                                // revertir el movimiento si hay error
+                                info.revert();
+                                Swal.fire('Error', 'No se pudo actualizar el evento.', 'error');
+                            } else {
+                                Swal.fire('Evento actualizado',
+                                    'Se ha cambiado la fecha/horario del evento.', 'success');
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            info.revert(); // revertir en caso de error de fetch
+                            Swal.fire('Error', 'No se pudo actualizar el evento.', 'error');
+                        });
+                },
+
+                // ===== Nuevo: redimensionar la duración del evento =====
+                eventResize: function(info) {
+                    const eventId = info.event.id;
+                    const start = info.event.start;
+                    const end = info.event.end || start;
+                    const startISO = start.toISOString();
+                    const endISO = end.toISOString();
+
+                    fetch(`/eventos/actualizar-fechas/${eventId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                start: startISO,
+                                end: endISO
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.success) {
+                                info.revert();
+                                Swal.fire('Error', 'No se pudo actualizar la duración del evento.',
+                                    'error');
+                            } else {
+                                Swal.fire('Evento actualizado',
+                                    'Se ha redimensionado el horario del evento.', 'success');
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            info.revert();
+                            Swal.fire('Error', 'No se pudo actualizar la duración del evento.',
+                                'error');
+                        });
                 }
-            })
-            .catch(error => {
-                console.error(error);
-                info.revert(); // revertir en caso de error de fetch
-                Swal.fire('Error', 'No se pudo actualizar el evento.', 'error');
             });
-        },
 
-        // ===== Nuevo: redimensionar la duración del evento =====
-        eventResize: function(info) {
-            const eventId = info.event.id;
-            const start = info.event.start;
-            const end = info.event.end || start;
-            const startISO = start.toISOString();
-            const endISO = end.toISOString();
+            calendar.render();
 
-            fetch(`/eventos/actualizar-fechas/${eventId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    start: startISO,
-                    end: endISO
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    info.revert();
-                    Swal.fire('Error', 'No se pudo actualizar la duración del evento.', 'error');
-                } else {
-                    Swal.fire('Evento actualizado', 'Se ha redimensionado el horario del evento.', 'success');
+            // Eliminar evento
+
+        });
+
+
+        function eliminar() {
+            // Obtener el ID del evento desde el campo oculto en el modal
+            const eventId = document.getElementById('editEventId').value;
+
+            // Crear la URL dinámica para la eliminación del evento
+            const deleteUrl = `{{ route('agenda.destroy', ':id') }}`.replace(':id', eventId);
+
+            // Mostrar SweetAlert para confirmar la eliminación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'No podrás deshacer esta acción.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar la solicitud para eliminar el evento
+                    fetch(deleteUrl, {
+                            method: 'post',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+
+
+                                window.location.reload();
+                            } else {
+                                // Mostrar un mensaje de error si la eliminación falla
+                                Swal.fire('Error', 'No se pudo eliminar el evento.', 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al eliminar el evento:', error);
+                            Swal.fire('Error', 'No se pudo eliminar el evento.', 'error');
+                        });
                 }
-            })
-            .catch(error => {
-                console.error(error);
-                info.revert();
-                Swal.fire('Error', 'No se pudo actualizar la duración del evento.', 'error');
             });
         }
-    });
-
-    calendar.render();
-
-    // Eliminar evento
-    $('#deleteEvent').on('click', function() {
-        const eventId = $('#editEventId').val();
-
-        Swal.fire({
-            title: '¿Estás seguro?',
-            text: 'No podrás deshacer esta acción.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                fetch(`/eventos/delete/${eventId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        calendar.getEventById(eventId).remove();
-                        Swal.fire('Eliminado', 'El evento ha sido eliminado.', 'success');
-                        $('#editEventModal').modal('hide');
-                    } else {
-                        Swal.fire('Error', 'No se pudo eliminar el evento.', 'error');
-                    }
-                });
-            }
-        });
-    });
-});
-
     </script>
 @endsection

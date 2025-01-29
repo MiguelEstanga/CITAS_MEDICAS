@@ -9,6 +9,7 @@ use App\Models\Presupuesto;
 use App\Models\ControlCita;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Models\MetodoDePago;
 use App\Models\Odontogram;
 class PresupuestoController extends Controller
 {   
@@ -27,9 +28,10 @@ class PresupuestoController extends Controller
     }
     public function store(Request $request)
     {
-      
+       
         try {
             Log::error($request->fecha);
+           $metodo = MetodoDePago::where('id', $request->metodo_de_pago)->first();
            $presupuesto =  Presupuesto::create([
                 'diagnostico' => $request->diagnostico,
                 'observacion' => $request->observacion,
@@ -38,7 +40,10 @@ class PresupuestoController extends Controller
                 'saldo' => $request->saldo,
                 'cancelado' =>  $request->cancelado,
                 'total' => 0,
-                'id_user' =>  $request->id_usuario
+                'id_user' =>  $request->id_usuario,
+                'metodo_de_pago' => $metodo->name,
+                'costo' => $request->costo,
+                'abono' => $request->abono
             ]);
             $odontograma = new Odontogram();
             $odontograma->data =  json_encode($request->odontograma);
@@ -133,5 +138,16 @@ class PresupuestoController extends Controller
         //    - Para mostrarlo en el navegador, usamos `stream()`.
         //    - Para forzar la descarga, usaríamos `->download()` o algo similar.
         return $dompdf->stream('reporte_' . now()->format('Ymd_His') . '.pdf');
+    }
+
+    public function eliminar($id)
+    {
+        $presupuesto = Presupuesto::find($id);
+        if ($presupuesto) {
+            $presupuesto->delete();
+            return response()->json(['success' => true, 'message' => 'Presupuesto eliminado exitosamente']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'No se pudo eliminar el presupuesto']);
+        }
     }
 }

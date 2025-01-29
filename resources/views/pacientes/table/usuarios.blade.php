@@ -5,8 +5,8 @@
     <table id="userTable" class="table  " style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Avatar</th>
+                <th>N</th>
+                <th>Paciente</th>
                 <th>Nombre</th>
                 <th>Cedula</th>
                 <th>Edad</th>
@@ -60,7 +60,9 @@
                         @csrf
                         @method('put')
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editUserModalLabel">Editar Usuario</h5>
+                            <h5 class="modal-title" id="editUserModalLabel">
+                                {{$type === 'paciente' ? 'Editar Paciente' : 'Editar Usuario'}}
+                            </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>

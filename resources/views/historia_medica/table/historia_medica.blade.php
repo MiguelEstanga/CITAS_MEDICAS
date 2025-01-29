@@ -37,7 +37,7 @@
                 </td>
                 <td>
                     <div class=" form-switch ">
-                      <input class="form-check-input"  type="checkbox" role="switch" class="cancelado" id="{{$presupuesto->id}}"  {{$presupuesto->cancelado ? "checked" : ""}}  >
+                      <input class="form-check-input cancelar_post"  type="checkbox" role="switch" class="cancelado" id="{{$presupuesto->id}}"  {{$presupuesto->cancelado ? "checked" : ""}}  >
                            
                     </div>
                 </td>
@@ -47,6 +47,14 @@
                             {!! iconos('show') !!}
                         </a>
                     </a>
+                 <a 
+                     onclick="eliminar('{{route('presupuesto.eliminar' , $presupuesto->id)}}')"
+                 >
+                     {!! iconos('delete') !!}
+                 </a>
+                        
+                   
+                    
                 </td>
             </tr>
         @endforeach
@@ -92,7 +100,7 @@
       });
 
       // Agregar evento de cambio a los checkboxes
-      document.querySelectorAll('.form-check-input').forEach(function(checkbox) {
+      document.querySelectorAll('.cancelar_post').forEach(function(checkbox) {
           checkbox.addEventListener('change', function(event) {
               const id = event.target.id;
               const cancelado = event.target.checked ? 1 : 0;
@@ -137,5 +145,110 @@
           // Mostrar un mensaje de error al usuario
       });
   }
+
+   function confirmarEstado(id, cancelado) {
+        const estado = cancelado ? 'Cancelar' : 'Marcar como No Cancelado';
+        Swal.fire({
+            title: `¿Estás seguro de ${estado}?`,
+            text: "Este cambio se guardará automáticamente.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Llamar a la función para actualizar el estado
+                actualizarEstado(id, cancelado);
+            } else {
+                // Revertir el estado del checkbox si se cancela
+                document.getElementById(`cancelar-${id}`).checked = !cancelado;
+            }
+        });
+    }
+
+    function actualizarEstado(id, cancelado) {
+        // Crear el payload para enviar
+        const payload = {
+            id: id,
+            cancelado: cancelado ? 1 : 0
+        };
+
+        fetch(`{{ route('presupuesto.updateCancelado') }}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                Swal.fire(
+                    'Estado actualizado',
+                    `El estado ha sido actualizado a ${cancelado ? 'Cancelado' : 'No Cancelado'}.`,
+                    'success'
+                );
+                location.reload();
+            } else {
+                Swal.fire(
+                    'Error',
+                    'Hubo un problema al actualizar el estado.',
+                    'error'
+                );
+            }
+        })
+        .catch(error => {
+            console.error('Error en la petición:', error);
+            Swal.fire(
+                'Error',
+                'No se pudo actualizar el estado.',
+                'error'
+            );
+        });
+    }
+
+    function eliminar(deleteUrl) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esta acción",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realiza la eliminación
+                    $.ajax({
+                        url: deleteUrl,
+                        type: 'POST',
+                        data: {
+                            _method: 'POST',
+                            _token: '{{ csrf_token() }}' // Asegúrate de incluir el token CSRF
+                        },
+                        success: function(response) {
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El registro ha sido eliminado.',
+                                'success'
+                            ).then(() => {
+                                location.reload(); // Recargar la página
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Error',
+                                'No se pudo eliminar el registro.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
 </script>
 

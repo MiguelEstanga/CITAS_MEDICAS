@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Inventario;
 use Exception;
 use Illuminate\Support\Facades\Log;
-
+use  Illuminate\Support\Facades\DB;
 
 class InventarioController extends Controller
 {
@@ -29,9 +29,11 @@ class InventarioController extends Controller
     public function inventarios()
     {
         $inventario = Inventario::where('tipo_producto', '=', 'inventario')->get();
+        $estado = DB::table('estado_inventarios')->get();
         return view('inventario.index' , [
             'inventario' => $inventario,
-            'tipos_productos' => 'inventario'
+            'tipos_productos' => 'inventario',
+            'estados' => $estado
         ]);
     }
 
@@ -42,6 +44,7 @@ class InventarioController extends Controller
             'descripcion' => 'required',
             'precio' => 'required',
             'cantidad' => 'required',
+            'estado' => 'required'
         ]);
         try{
             $inventario = new Inventario();
@@ -49,8 +52,9 @@ class InventarioController extends Controller
             $inventario->descripcion = $request->descripcion;
             $inventario->precio = $request->precio;
             $inventario->cantidad = $request->cantidad;
-            $inventario->imagen = $request->file('imagen')->store('imagen_inventario', 'public');
+            $inventario->imagen = $request->hasFile('imagen') ? $request->file('imagen')->store('imagen_inventario', 'public') : 'sistema/default_inventario.png';
             $inventario->tipo_producto = $request->tipo_producto;
+            $inventario->estado = $request->estado;
             $inventario->save();
             return back()->with('mensaje', 'Item creado exitosamente');
         }catch(Exception $e){
@@ -90,7 +94,7 @@ class InventarioController extends Controller
         try{
             $inventario = Inventario::findOrFail($items);
             $inventario->delete();
-            return back()->with('mensaje', 'Item eliminado exitosamente');
+            return response()->json(['success' => true, 'message' => 'Item eliminado exitosamente']);
         }catch(Exception $e){
             Log::error($e->getMessage());
             return back()->with('mensaje', $e->getMessage());

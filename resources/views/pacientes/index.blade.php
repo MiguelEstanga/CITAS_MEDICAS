@@ -9,7 +9,11 @@
             <button class="btn-default auto" data-bs-toggle="modal" data-bs-target="#modal1"> Crear nuevo usuario</button>
         </div>
     </div>
-
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="table-container">
         <h4 class=" alert">
             {{ $type === 'paciente' ? 'Lista de pacientes' : 'Lista de usuarios administrativos' }}
@@ -20,25 +24,82 @@
     <x-modal id="modal1" title="Registrar Usuarios">
         <form class="form-horizontal" action="{{ route('admin.user.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <x-input name="name" :required="true" label="Nombre" type="text" placeholder="Nombre" />
-            <x-input name="last_name" :required="true" label="Apellido" type="text" placeholder="Apellido" />
-            <x-input name="email" :required="true" label="Email" type="text" placeholder="Email" id="userEmail"
-                id_label="userEmailLabel" />
+            <div class="form-group">
+                <x-input name="name" :required="true" label="Nombre" type="text" placeholder="Nombre" />
+                @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <x-input name="last_name" :required="true" label="Apellido" type="text" placeholder="Apellido" />
+                @error('last_name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <x-input name="direccion" :required="true" label="Direccion" type="text" placeholder="Direccion" />
+                @error('direccion')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <x-input name="email" :required="true" label="Email" type="text" placeholder="Email" id="userEmail"
+                    id_label="userEmailLabel" />
+                @error('email')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
             @if ($type === 'paciente')
                 <input type="hidden" name="role" value="3">
                 <input type="text" hidden name="password" value="12345678">
+                <div class="form-group">
+                    <x-input name="antecedentes" :required="true" label="Antecedentes Familiares" type="text"
+                        placeholder="Antecedentes Familiares" />
+                    @error('antecedentes')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             @elseif ($type === 'usuario')
-                <x-input name="password" :required="true" label="Contraseña" type="password" placeholder="Contraseña" />
-                <x-input_select name="role" :required="true" label="Rol" :options="$roles" id="role" />
+                <div class="form-group">
+                    <x-input name="password" :required="true" label="Contraseña" type="password"
+                        placeholder="Contraseña" />
+                    @error('password')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <x-input_select name="role" :required="true" label="Rol" :options="$roles" id="role" />
+                    @error('role')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             @endif
-            <x-input name="cedula" :required="true" label="Cedula" type="text" placeholder="Cedula" rew />
-            <x-input name="edad" :required="true" label="Edad" type="text" placeholder="Edad" rew />
-            <x-input name="telefono" :required="true" label="Telefono" type="telefono" placeholder="telefono" rew />
-
-
-            <x-input_file label="Subir imagen" name="imagen" />
-            <div class="">
-                <button class=" btn-default " type="submit">Crear</button>
+            <div class="form-group">
+                <x-input name="cedula" :required="true" label="Cedula" type="number" placeholder="Cedula" />
+                @error('cedula')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <x-input name="edad" :required="true" label="Edad" type="number" placeholder="Edad" />
+                @error('edad')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <x-input name="telefono" :required="true" label="Telefono" type="number" placeholder="telefono" />
+                @error('telefono')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <x-input_file label="Subir imagen" name="imagen" />
+                @error('imagen')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <button class="btn-default" type="submit">Crear</button>
             </div>
         </form>
 
@@ -46,6 +107,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Selecciona el modal por su ID
+            const form = document.querySelector('form.form-horizontal');
+            const nameInput = form.querySelector('input[name="name"]');
+            const lastNameInput = form.querySelector('input[name="last_name"]');
+
+            form.addEventListener('submit', function(event) {
+                const nameValue = nameInput.value;
+                const lastNameValue = lastNameInput.value;
+
+                if (/\d/.test(nameValue) || /\d/.test(lastNameValue)) {
+                    event.preventDefault();
+                    alert('El nombre y apellido no pueden contener números.');
+                }
+            });
             const modalElement = document.getElementById('modal1');
 
             if (modalElement) {
