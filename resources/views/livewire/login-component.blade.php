@@ -6,7 +6,7 @@
         <form wire:submit.prevent="login" class="flex flex-col justify-center items-center"  method="post" action="{{ route('auth') }}">
             @csrf
             <div class="form-group">
-                <label for="email" class="mb-4">Email</label>
+                <label for="email" class="mb-4">Gmail</label>
                 <input type="email" class="form-control" id="email" wire:model.live="email" placeholder="Email">
                 @if ($emailExists == false)
                     <span class="text-danger" wire:loading.class.remove="d-none" wire:target="email">

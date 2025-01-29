@@ -2,13 +2,13 @@
     <table id="userTable" class="table  " style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>N</th>
                 <th>Avatar</th>
                 <th>Nombre</th>
-                <th>Cedula</th>
+                <th>Cédula</th>
                 <th>Edad</th>
                 <th>Telefono</th>
-                <th>Email</th>
+                <th>Gmail</th>
 
                 <th>Rol</th>
                 <th>Acciones</th>

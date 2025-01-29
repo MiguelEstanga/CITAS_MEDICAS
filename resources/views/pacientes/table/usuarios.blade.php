@@ -11,8 +11,10 @@
                 <th>Cédula</th>
                 <th>Edad</th>
                 <th>Teléfono</th>
-                <th>Email</th>
-                <th>Rol</th>
+                <th>Gmail</th>
+                @if ($type != 'paciente')
+                    <th>Rol</th>
+                @endif
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -27,7 +29,10 @@
                     <td>{{ $user->cedula }}</td>
                     <td>{{ $user->telefono }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->roles->first()->name ?? 'n/a' }}</td>
+                    @if ($type != 'paciente')
+                        <td>{{ $user->roles->first()->name ?? 'n/a' }}</td>
+                    @endif
+
                     <td class=" flex justify-center gap-2">
                         @if ($type === 'paciente')
                             <a class="pointer" href="{{ route('historia-medica.index', [$user->id, 'paciente']) }}">
@@ -61,7 +66,7 @@
                         @method('put')
                         <div class="modal-header">
                             <h5 class="modal-title" id="editUserModalLabel">
-                                {{$type === 'paciente' ? 'Editar Paciente' : 'Editar Usuario'}}
+                                {{ $type === 'paciente' ? 'Editar Paciente' : 'Editar Usuario' }}
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
@@ -85,7 +90,8 @@
                                 <input type="text" class="form-control" id="editUserTelefono" name="telefono"
                                     required>
                             </div>
-                            <x-input_select name="role" :required="true" label="Rol" :options="$roles" id="role" />
+                            <x-input_select name="role" :required="true" label="Rol" :options="$roles"
+                                id="role" />
                             <!--div class="mb-3 input">
                                 <label for="editUserEmail" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="editUserEmail" name="email" required>
@@ -128,7 +134,7 @@
                 const telefono = $(this).data('telefono');
                 const email = $(this).data('email');
                 const rol = $(this).data('rol'); // Rol actual del usuario
-              
+
                 // Llenar el modal con los datos del usuario
                 $('#editUserId').val(id);
                 $('#editUserName').val(name);

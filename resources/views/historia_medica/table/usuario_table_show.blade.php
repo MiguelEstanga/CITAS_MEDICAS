@@ -1,10 +1,10 @@
 <table id="userTable"  class="table  " style="width:100%">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>N</th>
             <th>Nombre</th>
             <th>Apellido</th>
-            <th>Cedula</th>
+            <th>Cédula</th>
             <th>Dirección</th>
             <th>Edad</th>
             <th>Teléfono</th>

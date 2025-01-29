@@ -44,7 +44,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Descripcion</th>
+                <th>Descripción</th>
                 <th>Imagen</th>
                 <th>Precio</th>
                 <th>Acciones</th>

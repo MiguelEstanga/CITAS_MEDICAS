@@ -5,7 +5,7 @@
         <div class="usuario_estadisticas">
             <div class="card mb-3">
                 <div class="card-header">
-                    <h3>Usuarios Nuevos</h3>
+                    <h3>Nuevos Pacientes</h3>
                 </div>
                 <div class="card-body d-flex justify-content-center align-items-center">
                     <h1 class="text-center">{{ $newUsersCount }}</h1>

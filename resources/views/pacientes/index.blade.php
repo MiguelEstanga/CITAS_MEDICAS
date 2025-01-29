@@ -20,8 +20,10 @@
         </h4>
         @include('pacientes.table.usuarios')
     </div>
-
-    <x-modal id="modal1" title="Registrar Usuarios">
+    @php
+        $type === 'paciente' ? $title = 'Registrar pacientes' : $title = 'Registrar usuarios';
+    @endphp
+    <x-modal id="modal1" :title="$title">
         <form class="form-horizontal" action="{{ route('admin.user.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
@@ -43,7 +45,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <x-input name="email" :required="true" label="Email" type="text" placeholder="Email" id="userEmail"
+                <x-input name="email" :required="true" label="Gmail" type="text" placeholder="Email" id="userEmail"
                     id_label="userEmailLabel" />
                 @error('email')
                     <span class="text-danger">{{ $message }}</span>
