@@ -1,6 +1,11 @@
 @extends('layout.app')
 
 @section('content')
+    <style>
+        .fc-day-grid-event .fc-all-day {
+            display: none;
+        }
+    </style>
     <div class=" mb-4 d-flex justify-content-end align-items-center">
         <x-avatar :user="user()"></x-avatar>
     </div>
