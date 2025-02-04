@@ -19,7 +19,21 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
-
+<script>
+    // Cuando se cargue el DOM, agregar un listener global para inputs
+    document.addEventListener('DOMContentLoaded', function() {
+      // Escucha cualquier evento "input" en el documento
+      document.addEventListener('input', function(e) {
+        // Verifica si el elemento objetivo es un input de tipo number
+        if (e.target.matches('input[type="number"]')) {
+          // Si el valor es negativo, lo reestablece a 0
+          if (Number(e.target.value) < 0) {
+            e.target.value = 0;
+          }
+        }
+      });
+    });
+  </script>
 <body class="text-dark" style="background-color: var(--color_menu)!important;">
     <div id="wrapper" class="d-flex">
         <nav id="sidebar" class="text-white p-4" style="background-color: var(--color_menu);">
