@@ -102,7 +102,7 @@ Route::group(['middleware' => ['auth']], function () {
     // historia medico
     Route::prefix('historia-medica')->group(function () {
       Route::get('/{id}', [HistoriaController::class, 'index'])->name('historia-medica.index');
-      Route::get('historia-medica/{id}', [HistoriaController::class, 'ver_historia_medica'])->name('historia-medica.ver_historia_medica');
+      Route::get('historia-medica/{id}', [PresupuestoController::class, 'ver_historia_medica'])->name('historia-medica.ver_historia_medica');
      
     });
   //presupuesto
@@ -111,7 +111,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/actulizar_cancelado', [PresupuestoController::class, 'updateCancelado'])->name('presupuesto.updateCancelado');
     Route::put('/{id}', [PresupuestoController::class, 'update'])->name('presupuesto.update');
     Route::post('/odontograma', [PresupuestoController::class, 'odontograma_store'])->name('presupuesto.odontograma_store');
-    Route::get('presupuesto_pdf/{control_cita_id}', [PresupuestoController::class, 'persupuesto_pdf'])->name('presupuesto.persupuesto_pdf');
+    Route::get('presupuesto_pdf/{id}', [PresupuestoController::class, 'persupuesto_pdf'])->name('presupuesto.persupuesto_pdf');
     Route::post('/eliminar/{id}', [PresupuestoController::class, 'eliminar'])->name('presupuesto.eliminar');
     
   });

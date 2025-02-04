@@ -16,11 +16,14 @@ class Presupuesto extends Model
         'saldo',
         'total',
         'metodo_de_pago',
-       
+        'tratamiento',
+        'unidad_dental',
+        'tratamiento_realizado',
          'costo',
          'abono',
         'pagado',
-        'cancelado'
+        'cancelado',
+        'prestamo',
     ];
     public function odontograma(){
         return $this->hasOne(Odontogram::class, 'presupuestos_id');
@@ -28,5 +31,10 @@ class Presupuesto extends Model
     public function control_citas()
     {
         return $this->belongsTo(ControlCita::class, 'id_control_citas');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

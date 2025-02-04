@@ -63,7 +63,7 @@ class ReporteController extends Controller
                 ->get();
         }
             
-
+        
         return self::Pdf([
             'view' => 'pdf.ventas',
             'var' => [

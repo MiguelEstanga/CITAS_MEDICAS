@@ -52,52 +52,76 @@ class PanelController extends Controller
 
 
     public function estadisticas()
-{
-    $newUsersCount = User::where('created_at', '>=', Carbon::now()->subDays(7))->count();
+    {
+        $newUsersCount = User::where('created_at', '>=', Carbon::now()->subDays(7))->count();
 
-    // Datos para usuarios
-    $dailyUsers = User::where('created_at', '>=', Carbon::now()->subDays(7))
-        ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-        ->groupBy('date')
-        ->orderBy('date', 'asc')
-        ->get();
+        // Datos para usuarios
+        $dailyUsers = User::where('created_at', '>=', Carbon::now()->subDays(7))
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
 
-    // Datos para ModelA (Ventas): Agrupar por fecha y obtener el máximo por día
-    $dailyVentas = Venta::where('created_at', '>=', Carbon::now()->subDays(7))
-        ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-        ->groupBy('date')
-        ->orderBy('date', 'asc')
-        ->get();
+        
 
-    $labelsA = $dailyVentas->pluck('date')->toArray(); // Fechas para el gráfico de ventas
-    $maxVentasPerDay = $dailyVentas->pluck('count')->toArray(); // Cantidad máxima por día
 
-    // Datos para ModelB (Presupuestos)
-    $dailyModelB = Presupuesto::where('created_at', '>=', Carbon::now()->subDays(7))
-        ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-        ->groupBy('date')
-        ->orderBy('date', 'asc')
-        ->get();
+        // Obtener datos para los gráficos
+        $labels = $dailyUsers->pluck('date')->toArray(); // Fechas (iguales para todos)
+        $dataUsers = $dailyUsers->pluck('count')->toArray(); // Usuarios
+      
+        return view('panel.estadisticas', [
+            'newUsersCount' => $newUsersCount,
+            'labels' => $labels,
+            'dataUsers' => $dataUsers,
+            'edadPromedio' => User::edadPromedioPacientes() ?? 0,
+            'presupuestos' => $this->presupuestos()['abonos'],
+            'totalCosto' => $this->graficosPastel()['totalCosto'],
+            'totalAbono' => $this->graficosPastel()['totalAbono'],
+            'totalSaldo' => $this->graficosPastel()['totalSaldo']
+        ]);
+    }
+    public function graficosPastel()
+    {
+        // Obtener sumatorias totales
+        $totalCosto = Presupuesto::sum('costo');
+        $totalAbono = Presupuesto::sum('abono');
+        $totalSaldo = Presupuesto::sum('saldo');
 
-    // Total y cantidad cancelada en Presupuestos
-    $totalPresupuestos = Presupuesto::sum('saldo'); // Suma total de los presupuestos
-    $totalCancelado = Presupuesto::where('cancelado', 1)->sum('saldo'); // Suma de los montos cancelados
+        return [
+            'totalCosto' => $totalCosto,
+            'totalAbono' => $totalAbono,
+            'totalSaldo' => $totalSaldo
+        ];
+    }
+    public function presupuestos()
+    {
+        $presupuestos = Presupuesto::all()
+            ->groupBy(function ($item) {
+                return \Carbon\Carbon::parse($item->fecha)->format('Y-m');
+            })
+            ->map(function ($monthItems) {
+                return [
+                    'abonos' => $monthItems->sum('abono'),
+                    'costos' => $monthItems->sum('costo')
+                ];
+            });
 
-    // Obtener datos para los gráficos
-    $labels = $dailyUsers->pluck('date')->toArray(); // Fechas (iguales para todos)
-    $dataUsers = $dailyUsers->pluck('count')->toArray(); // Usuarios
-    $dataModelB = $dailyModelB->pluck('count')->toArray(); // ModelB (Presupuestos)
+        // Rellenar meses sin datos
+        $startDate = \Carbon\Carbon::now()->subYear();
+        $endDate = \Carbon\Carbon::now();
 
-    return view('panel.estadisticas', [
-        'newUsersCount' => $newUsersCount,
-        'labels' => $labels,
-        'dataUsers' => $dataUsers,
-        'labelsA' => $labelsA,
-        'ventas' => $maxVentasPerDay, // Cantidad máxima de ventas por día
-        'dataModelB' => $dataModelB,
-        'totalPresupuestos' => $totalPresupuestos,
-        'totalCancelado' => $totalCancelado,
-    ]);
-}
+        while ($startDate <= $endDate) {
+            $key = $startDate->format('Y-m');
+            if (!isset($presupuestos[$key])) {
+                $presupuestos[$key] = ['abonos' => 0, 'costos' => 0];
+            }
+            $startDate->addMonth();
+        }
 
+        // Ordenar por fecha
+        return  [
+            'abonos' => $presupuestos->pluck('abonos'),
+            'costos' => $presupuestos->pluck('costos')
+        ];
+    }
 }

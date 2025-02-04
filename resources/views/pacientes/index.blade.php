@@ -6,7 +6,8 @@
     </div>
     <div class="mb-2">
         <div class="">
-            <button class="btn-default auto" data-bs-toggle="modal" data-bs-target="#modal1"> Crear nuevo  {{ $type === 'paciente' ? 'Paciente' : 'Usuario' }}</button>
+            <button class="btn-default auto" data-bs-toggle="modal" data-bs-target="#modal1"> Crear nuevo
+                {{ $type === 'paciente' ? 'Paciente' : 'Usuario' }}</button>
         </div>
     </div>
     @if (session('error'))
@@ -21,7 +22,7 @@
         @include('pacientes.table.usuarios')
     </div>
     @php
-        $type === 'paciente' ? $title = 'Registrar pacientes' : $title = 'Registrar usuarios';
+        $type === 'paciente' ? ($title = 'Registrar pacientes') : ($title = 'Registrar usuarios');
     @endphp
     <x-modal id="modal1" :title="$title">
         <form class="form-horizontal" action="{{ route('admin.user.store') }}" method="POST" enctype="multipart/form-data">
@@ -112,7 +113,17 @@
             const form = document.querySelector('form.form-horizontal');
             const nameInput = form.querySelector('input[name="name"]');
             const lastNameInput = form.querySelector('input[name="last_name"]');
+            // Captura todos los inputs numéricos
+            const numericInputs = document.querySelectorAll('input[type="number"]');
 
+            numericInputs.forEach(function(input) {
+                input.addEventListener('input', function() {
+                    // Si el valor es menor que 0, lo reinicia a 0
+                    if (Number(this.value) < 0) {
+                        this.value = 0;
+                    }
+                });
+            });
             form.addEventListener('submit', function(event) {
                 const nameValue = nameInput.value;
                 const lastNameValue = lastNameInput.value;

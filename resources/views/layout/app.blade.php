@@ -16,6 +16,8 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <link rel="icon" href="{{ asset('storage/sistema/icono_diente.png') }}" type="image/png">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 <body class="text-dark" style="background-color: var(--color_menu)!important;">

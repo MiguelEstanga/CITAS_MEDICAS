@@ -42,9 +42,8 @@ class UserController extends Controller
             $usuarios = User::whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'paciente');
             })
-            ->where('id', '!=', 1) // Excluir al usuario con ID 1
-            ->get();
-
+                ->where('id', '!=', 1) // Excluir al usuario con ID 1
+                ->get();
         }
         return view('pacientes.index', [
             'pacientes' => $usuarios,
@@ -68,11 +67,11 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return redirect()->back()
-                             ->withErrors($validator)
-                             ->withInput()
-                             ->with('error', 'Revise el formulario');
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Revise el formulario');
         }
-        
+
         $user = new User();
 
         // Verificar si se ha subido una imagen
@@ -86,7 +85,7 @@ class UserController extends Controller
         }
 
 
-        
+
         // Asignar otros campos al modelo User
         $user->name = $request->input('name');
         $user->last_name = $request->input('last_name');
@@ -136,29 +135,26 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
-     
-        
+
+
         $user = User::findOrFail($request->id);
+
+
       
-       
-       
         // Verificar si se ha subido una nueva imagen
         if ($request->hasFile('imagen')) {
             // Almacenar la imagen en el almacenamiento (storage) y guardar la ruta
             $filePath = $request->file('imagen')->store('images', 'public');
 
             $user->avatar =  $filePath; // Ajustar ruta para accesibilidad
-            } 
-        if($request->input('last_name'))
-        {
-            $user->last_name = $request->input('last_name');
         }
-        // Actualizar los demás campos
-        $user->name = $request->input('name');
-        $user->telefono = $request->input('telefono');
      
-        $user->cedula = $request->input('cedula');
-        $user->edad = $request->input('edad');
+        // Actualizar los demás campos
+        $user->name = $request->input('name') ?? "";
+        $user->telefono = $request->input('telefono') ?? "";
+        $user->last_name = $request->input('last_name') ?? "";
+        $user->cedula = $request->input('cedula') ?? "";
+        $user->edad = $request->input('edad') ?? "";
 
         // Eliminar el rol actual del usuario
         $user->roles()->detach();

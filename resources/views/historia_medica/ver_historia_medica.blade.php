@@ -1,7 +1,12 @@
 @extends('layout.app')
 @section('content')
-<div class="table-container sombra mb-4">
-   <table class="table">
+
+  <div class="table-container sombra">
+    @include('historia_medica.odontograma_sho') 
+  </div>
+  
+<div class=" sombra mb-4">
+   <table class="">
        <thead>
            <tr>
                <th>Diagnostico</th>
@@ -25,9 +30,6 @@
    </table>
 </div>
 
-<div class="table-container sombra">
-  @include('historia_medica.odontograma_sho') 
-</div>
 
 
 @endsection

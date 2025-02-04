@@ -77,5 +77,15 @@ class User extends Authenticatable
         return $this->belongsTo(PresioCita::class , 'id') ;
     }
 
+    public static function edadPromedioPacientes()
+    {
+        $pacientes = self::role('paciente')->get();
+        
+        if ($pacientes->isEmpty()) {
+            return 0;
+        }
+
+        return round($pacientes->avg('edad'), 2);
+    }
     
 }

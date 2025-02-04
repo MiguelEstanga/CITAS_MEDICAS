@@ -11,7 +11,7 @@
             @csrf
             <div class="form-group mb-4">
                 <label for="descripcion" class="form-label text-white mb-4">Descripción de la solicitud</label>
-                <textarea name="descripcion" id="descripcion" rows="4" class="form-control"
+                <textarea name="descripción" id="descripcion" rows="4" class="form-control"
                     placeholder="Escriba la descripción detallada de su solicitud..." required></textarea>
             </div>
 

@@ -10,7 +10,7 @@
                     value="{{ $user->name }}" />
                 <x-input name="last_name" :required="true" label="Apellido" type="text" placeholder="Apellido"
                     value="{{ $user->last_name }}" />
-                <x-input name="email" :required="true" label="email" type="email" placeholder="email"
+                <x-input name="email" :required="true" label="Gmail" type="email" placeholder="Gmail"
                     value="{{ $user->email }}" />
 
                 <x-input_select name="role" :required="true" label="Rol" :options="$roles"

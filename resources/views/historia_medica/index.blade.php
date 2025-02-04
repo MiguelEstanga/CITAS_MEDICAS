@@ -9,7 +9,7 @@
             <span class="name">Paciente</span>: {{ $usuario->name }} {{ $usuario->last_name }}
         </div>
         <div>
-            
+
         </div>
         <div class="p-2">
             @include('historia_medica.table.usuario_table_show')
@@ -22,35 +22,101 @@
     </button>
 
     <!-- Formulario oculto inicialmente -->
-    <div id="formulario-container" class="formulario table-container mt-2 mb-4 sombra" style="padding: 20px;display: none;">
+    <div id="formulario-container" class="formulario table-container mt-2 mb-4 sombra">
         <h2>
             Nuevo Tratamiento
         </h2>
         <form action="" method="POST" id="formHistoria">
             @csrf
-            <x-input name="diagnostico" label="Diagnostico" required="true" value="{{ old('diagnostico') }}" :required="true" />
-            <x-input name="observacion" label="Observación" required="true" value="{{ old('observacion') }}" :required="true" />
-            <x-input_select name="metodo_de_pago" label="Metodo de Pago" required="true"  :required="true" :options="$metodo_pagos" />
-            <input value="{{ $id_usuario }}" name="id_usuario" hidden>
-            <div class="row">
+            <x-input name="diagnostico" label="Diagnostico" required="true" value="{{ old('diagnostico') }}"
+                :required="true" />
+            <x-input name="observacion" label="Observación" required="true" value="{{ old('observacion') }}"
+                :required="true" />
+            <x-input name="tratamiento" label="Tratamiento" required="true" value="{{ old('Tratamiento') }}"
+                :required="true" />
+            <x-input name="motivo_consulta" label="Motivo de Consulta" required="true" value="{{ old('motivo_consulta') }}"
+                :required="true" />
+            <x-input_select name="metodo_de_pago" label="Metodo de Pago" required="true" :required="true"
+                :options="$metodo_pagos" />
+            <input value="{{ $usuario->id }}" name="id_usuario" hidden >
+            <div class="row container" style="margin: auto;">
                 <div class="col-2">
-                    <x-input name="fecha" type="date" label="Fecha" required="true" value="{{ old('fecha') }}" :required="true" />
+                    <x-input name="fecha" type="date" label="Fecha" required="true" value="{{ old('fecha') }}"
+                        :required="true" />
                 </div>
                 <div class="col-2">
-                    <x-input name="a_cuenta" label="A/cuenta" required="true" value="{{ old('a_cuenta') }}" :required="true" />
+                    <x-input name="a_cuenta" label="A/cuenta" required="true" value="{{ old('a_cuenta') }}"
+                        :required="true" />
                 </div>
                 <div class="col-2">
-                    <x-input name="saldo" label="Saldo" required="true" value="{{ old('saldo') }}" type="number" :required="true"  />
+                    <x-input name="saldo" label="Saldo" required="true" value="{{ old('saldo') }}" type="number"
+                        :required="true" />
                 </div>
                 <div class="col-2">
-                    <x-input name="costo" label="Costo" required="true" value="{{ old('saldo') }}" type="number" :required="true"  />
+                    <x-input name="costo" label="Costo" required="true" value="{{ old('saldo') }}" type="number"
+                        :required="true" />
                 </div>
                 <div class="col-2">
-                    <x-input name="abono" label="Abono" required="true" value="{{ old('saldo') }}" type="number" :required="true"  />
+                    <x-input name="abono" label="Abono" required="true" value="{{ old('saldo') }}" type="number"
+                        :required="true" />
                 </div>
             </div>
+            <div class="container mb-3 mt-4">
+                <h2>
+                    Tratamiento
+                </h2>
+            </div>
+            <div class="row container" style="margin: auto;">
+                <div class="col-2">
+                    <x-input name="labios" label="Labios" required="true" value="{{ old('tratamiento') }}"
+                        :required="true" />
+                </div>
+                <div class="col-2">
+                    <x-input name="lengua" label="Lengua" required="true" value="{{ old('tratamiento') }}"
+                        :required="true" />
+                </div>
+                <div class="col-2">
+                    <x-input name="encimas" label="Encimas" required="true" value="{{ old('tratamiento') }}"
+                        :required="true" />
+                </div>
+                <div class="col-2">
+                    <x-input name="atm" label="Atm" required="true" value="{{ old('tratamiento') }}"
+                        :required="true" />
+                </div>
+                <div class="col-2">
+                    <x-input name="carrillos" label="Carrillos" required="true" value="{{ old('carrillos') }}"
+                        :required="true" />
+                </div>
+
+
+            </div>
+
+            <div class="row container" style="margin: auto;">
+                <div class="col-2">
+                    <x-input name="vosticulos" label="Vosticulos" required="true" value="{{ old('vosticulos') }}"
+                        :required="true" />
+                </div>
+                <div class="col-2">
+                    <x-input name="encimas" label="Encimas" required="true" value="{{ old('encimas') }}"
+                        :required="true" />
+                </div>
+                <div class="col-2">
+                    <x-input name="paladar" label="Paladar" required="true" value="{{ old('paladar') }}"
+                        :required="true" />
+                </div>
+                <div class="col-2">
+                    <x-input name="piso_lengua" label="Piso Lengua" required="true" value="{{ old('piso_lengua') }}"
+                        :required="true" />
+                </div>
+                <div class="col-2">
+                    <x-input name="oculacion" label="Oculación" required="true" value="{{ old('oculacion') }}"
+                        :required="true" />
+                </div>
+            </div>
+
             <div class="form-check form-switch container">
-                <input class="form-check-input" type="checkbox" name="cancelado" role="switch" id="flexSwitchCheckDefault" onchange="updateStatus(this)">
+                <input class="form-check-input" type="checkbox" name="cancelado" role="switch"
+                    id="flexSwitchCheckDefault" onchange="updateStatus(this)">
                 <label class="form-check-label" for="flexSwitchCheckDefault" id="statusLabel">Pagado</label>
             </div>
             <div class="sombra mt-4 p-3 container" style="border-radius: 5px;">
@@ -65,7 +131,8 @@
     </div>
     <div class="" style="display:felx; flex-direction: row; gap: 10px;">
         <div>
-            <a class="btn btn-danger"  href="{{route('reporte.presupuesto' , $id_usuario)}}" target="blank">Generar PDF</a>
+            <a class="btn btn-danger" href="{{ route('reporte.presupuesto', $id_usuario) }}" target="blank">Generar
+                PDF</a>
         </div>
     </div>
     <div class="table-container_show sombra" style="position: relative;">
@@ -146,29 +213,20 @@
             const abono = form.querySelector('[name="abono"]').value;
             const costo = form.querySelector('[name="costo"]').value;
             const cancelado = form.querySelector('[name="cancelado"]').checked;
+            const labios = form.querySelector('[name="labios"]').value;
+            const lengua = form.querySelector('[name="lengua"]').value;
+            const encimas = form.querySelector('[name="encimas"]').value;
+            const atm = form.querySelector('[name="atm"]').value;
+            const carrillos = form.querySelector('[name="carrillos"]').value;
+            const vosticulos = form.querySelector('[name="vosticulos"]').value;
+            const paladar = form.querySelector('[name="paladar"]').value;
+            const piso_lengua = form.querySelector('[name="piso_lengua"]').value;
+            const oculacion = form.querySelector('[name="oculacion"]').value;
+            const tratamiento = form.querySelector('[name="tratamiento"]').value;
+            const motivo_consulta = form.querySelector('[name="motivo_consulta"]').value;
 
             // 3. Construimos el objeto con el odontograma
-            const dataOdontograma = {};
 
-            document.querySelectorAll('.seccion').forEach((section) => {
-                const tooth = section.getAttribute('data-diente');
-                const part = section.getAttribute('data-parte');
-                const color = section.style.backgroundColor || '';
-
-                // Asegúrate de inicializar cada diente dentro del objeto
-                if (!dataOdontograma[tooth]) {
-                    dataOdontograma[tooth] = {
-                        superior: '',
-                        inferior: '',
-                        central: '',
-                        izquierda: '',
-                        derecha: ''
-                    };
-                }
-
-                // Asigna el color correspondiente
-                dataOdontograma[tooth][part] = color;
-            });
 
             // 4. Creamos el objeto con todos los datos
             const payload = {
@@ -178,11 +236,26 @@
                 a_cuenta,
                 saldo,
                 cancelado,
-                odontograma: dataOdontograma,
+                odontograma: toothStates,
                 id_usuario,
                 metodo_de_pago,
                 abono,
-                costo
+                costo,
+                labios,
+                tratamiento,
+                lengua,
+                encimas,
+                atm,
+                carrillos,
+                vosticulos,
+                paladar,
+                piso_lengua,
+                oculacion,
+                motivo_consulta,
+                vosticulos,
+
+
+
             };
 
             // 5. Hacemos la petición Fetch a tu ruta Laravel
@@ -214,16 +287,15 @@
         function updateStatus(checkbox) {
             // Obtener el label asociado
             const statusLabel = document.getElementById('statusLabel');
-    
+
             // Verificar el estado del checkbox
             if (checkbox.checked) {
                 statusLabel.textContent = 'Pago';
             } else {
                 statusLabel.textContent = 'Deuda';
             }
-    
-            
+
+
         }
     </script>
-    
 @endsection

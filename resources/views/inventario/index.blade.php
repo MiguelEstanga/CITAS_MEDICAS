@@ -26,7 +26,7 @@
                     <th>Nombre</th>
                     <th>Estado</th>
                     <th>Imagen</th>
-                    <th>Descripcion</th>
+                    <th>Descripción</th>
                     <th>Precio</th>
                     <th>Cantidad</th>
                     <th>Aumentar</th>

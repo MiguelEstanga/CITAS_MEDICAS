@@ -1,236 +1,365 @@
-<div class="container">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <h1>Odontograma</h1>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
 
-    <!-- Contenedor del odontograma -->
-    <div id="odontograma-container">
-        <div id="odontograma"></div>
-    </div>
+    /* Contenedor general de todas las filas */
+    .odontograma-container {
+      display: flex;
+      flex-direction: column;
+      gap: 40px; /* espacio entre filas */
+      align-items: center; /* centrar cada fila */
+    }
 
-    <!-- Modal dinámico para opciones -->
-    <div id="opcionesModal" class="modal">
-        <div class="modal-header">
-            <h5>Opciones del Diente</h5>
-            <button type="button" class="close" onclick="cerrarModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p>Diente: <span id="numeroDiente"></span></p>
-            <p>Parte: <span id="parteDiente"></span></p>
-            <div id="accionesOpciones">
-                <button type="button" class="btn btn-danger" onclick="marcarDiente('fractura')">Fractura</button>
-                <button  type="button"class="btn btn-primary" onclick="marcarDiente('restauracion')">Restauración</button>
-                <button  type="button"class="btn btn-warning" onclick="marcarDiente('empastado')">Empastado</button>
-                <button  type="button"class="btn btn-success" onclick="marcarDiente('sano')">Sano</button>
-                <button  type="button"class="btn btn-secondary" onclick="marcarDiente('borrar')">Borrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+    /* Cada fila de dientes */
+    .row-dientes {
+      display: flex;
+      gap: 20px; /* separa cada diente en la fila */
+      flex-wrap: wrap; 
+      justify-content: center; 
+    }
 
-<!-- Estilos -->
-<style>
-/* Contenedor principal */
-#odontograma-container {
-    text-align: center;
-    margin: 20px 0;
-}
+    /* Diente */
+    .diente {
+      position: relative;
+      width: 70px;  /* puedes ajustar a tu gusto */
+      height: 70px;
+      border: 1px solid #000;
+      border-radius: 40px;
+      cursor: pointer;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    .diente .numero_diente {
+      position: absolute;
+      top: -18px;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 12px;
+    }
 
-/* Grid para el odontograma */
-#odontograma {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-    gap: 10px;
-    justify-content: center;
-}
+    /* Zonas internas del diente */
+    .parte_superior,
+    .parte_inferior,
+    .parte_izquierda,
+    .parte_derecha,
+    .parte_centro {
+      position: absolute;
+      border: 1px solid #000;
+      box-sizing: border-box;
+      background-color: #fff;
+    }
+    .parte_superior {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 18px;
+      border-top-left-radius: 39px;
+      border-top-right-radius: 39px;
+    }
+    .parte_inferior {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 18px;
+      border-bottom-left-radius: 39px;
+      border-bottom-right-radius: 39px;
+    }
+    .parte_izquierda {
+      top: 18px;
+      left: 6px;
+      width: 24px;
+      height: 34px;
+      border-top-left-radius: 39px;
+      border-bottom-left-radius: 39px;
+    }
+    .parte_derecha {
+      top: 18px;
+      right: 6px;
+      width: 24px;
+      height: 34px;
+      border-top-right-radius: 39px;
+      border-bottom-right-radius: 39px;
+    }
+    .parte_centro {
+      top: 18px;
+      left: 30px;
+      right: 30px;
+      height: 34px;
+    }
 
-/* Cada diente */
-.diente {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    margin: 10px 0;
-    border-radius: 50%;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-}
+    /* Modal */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #f2f2f2;
+      padding: 20px;
+      border: 2px solid #666;
+      z-index: 9999;
+      border-radius: 8px;
+      max-width: 300px;
+    }
+    #modal h2 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+    #modal select {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 6px;
+      font-size: 14px;
+    }
 
-.diente:hover {
-    transform: scale(1.1);
-}
+    /* Fondo oscuro detrás del modal */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100vw; 
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+    }
 
-/* Número del diente */
-.numero-diente {
-    position: absolute;
-    top: -20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: black;
-}
+    .botones {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .botones button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
 
-/* Secciones del diente */
-.seccion {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transition: background-color 0.2s;
-}
+  </style>
+</head>
+<body>
+  
+  <div class="odontograma-container p-4">
+    <!-- Fila 1 -->
+    <div class="row-dientes" id="row1"></div>
+    <!-- Fila 2 (centrada) -->
+    <div class="row-dientes" id="row2"></div>
+    <!-- Fila 3 (centrada) -->
+    <div class="row-dientes" id="row3"></div>
+    <!-- Fila 4 -->
+    <div class="row-dientes" id="row4"></div>
+  </div>
 
-.central {
-    clip-path: circle(25% at 50% 50%);
-    background: rgba(255, 255, 255, 0.7);
-    z-index: 5;
-}
+  <!--div class="botones">
+    <button id="mostrar-json">Mostrar JSON en Consola</button>
+  </div-->
 
-.superior {
-    clip-path: polygon(0 0, 100% 0, 50% 50%);
-    background: rgba(255, 255, 255, 0.9);
-}
+  <!-- Overlay (fondo oscuro) -->
+  <div id="overlay"></div>
 
-.inferior {
-    clip-path: polygon(0 100%, 100% 100%, 50% 50%);
-    background: rgba(255, 255, 255, 0.9);
-}
+  <!-- Modal para seleccionar el estado de la zona -->
+  <div id="modal">
+    <h2>Selecciona el estado/zona</h2>
+    <p><strong id="info-diente"></strong></p>
 
-.izquierda {
-    clip-path: polygon(0 0, 0 100%, 50% 50%);
-    background: rgba(255, 255, 255, 0.9);
-}
+    <!-- Select con las opciones de estado -->
+    <select id="select-estado">
+      <!-- Se llenará dinámicamente con JS -->
+    </select>
 
-.derecha {
-    clip-path: polygon(100% 0, 100% 100%, 50% 50%);
-    background: rgba(255, 255, 255, 0.9);
-}
+    <button type="button" id="btn-aplicar">Aplicar</button>
+    <button type="button" id="modal-cancelar">Cancelar</button>
+  </div>
 
-/* Modal dinámico */
-.modal {
-    display: none;
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
-    max-width: 200px;
-}
+  <script>
+    // 1) Arrays con el ORDEN de dientes por FILAS
+    const fila1 = ["18","17","16","15","14","12","11","21","22","23","24","25","26","27","28"];
+    const fila2 = ["55","54","53","52","51","61","62","63","64","65"];
+    const fila3 = ["85","84","83","82","81","71","72","73","74","75"];
+    const fila4 = ["48","47","46","45","44","43","42","41","31","32","33","34","35","36","37","38"];
 
-.modal .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
-}
+    // 2) Opciones de estado/colores (podrías cambiar los colores a tu gusto)
+    //    label = nombre del estado, color = color que se pintará
+    const estadoOpciones = [
+      { label: "empastizado",      color: "#B5651D" },
+      { label: "caries",           color: "#FF0000" },
+      { label: "sano",             color: "#00FF00" },
+      { label: "extraccion",       color: "#000000" },
+      { label: "odontopediatria",  color: "#FF69B4" },
+      { label: "ortodoncia",       color: "#0000FF" },
+      { label: "protesis dental",  color: "#8A2BE2" },
+      { label: "endodoncia",       color: "#FFA500" },
+      { label: "eliminar",         color: "#FFFFFF" } // "blanco" para resetear
+    ];
 
-.modal .modal-body {
-    padding: 10px;
-}
+    // 3) Objeto global para almacenar el estado de cada ZONA de cada diente
+    //    Estructura: toothStates[diente] = {
+    //       top:    { label: "caries", color: "#f00" },
+    //       bottom: { label: "sano", color: "#0f0" },
+    //       ...
+    //    };
+    const toothStates = {};
 
-.modal .btn {
-    display: block;
-    width: 100%;
-    margin-bottom: 5px;
-    text-align: center;
-}
+    // Función para crear la estructura HTML de un diente
+    function crearDiente(toothNumber) {
+      const diente = document.createElement('div');
+      diente.className = 'diente';
+      diente.setAttribute('data-diente', toothNumber);
 
-.close {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-</style>
+      // Número del diente
+      const numElem = document.createElement('div');
+      numElem.className = 'numero_diente';
+      numElem.textContent = toothNumber;
+      diente.appendChild(numElem);
 
-<!-- JavaScript -->
-<script>
-    const dientes = 32; // Número de dientes
-    const odontograma = document.getElementById("odontograma");
-    let parteSeleccionada = null; // Parte seleccionada del diente
+      // Zonas (5)
+      const top = document.createElement('div');
+      top.className = 'parte_superior';
+      top.setAttribute('data-area', 'top');
+      diente.appendChild(top);
 
-    // Generar dientes con 5 partes (central, superior, inferior, izquierda, derecha)
-    function generarOdontograma() {
-        for (let i = 1; i <= dientes; i++) {
-            const diente = document.createElement("div");
-            diente.classList.add("diente");
-            diente.setAttribute("data-id", i);
+      const bottom = document.createElement('div');
+      bottom.className = 'parte_inferior';
+      bottom.setAttribute('data-area', 'bottom');
+      diente.appendChild(bottom);
 
-            // Número del diente
-            const numero = document.createElement("div");
-            numero.classList.add("numero-diente");
-            numero.innerText = i;
-            diente.appendChild(numero);
+      const left = document.createElement('div');
+      left.className = 'parte_izquierda';
+      left.setAttribute('data-area', 'left');
+      diente.appendChild(left);
 
-            // Partes del diente
-            ["central", "superior", "inferior", "izquierda", "derecha"].forEach((parte) => {
-                const seccion = document.createElement("div");
-                seccion.classList.add("seccion", parte);
-                seccion.setAttribute("data-parte", parte);
-                seccion.setAttribute("data-diente", i);
-                diente.appendChild(seccion);
-            });
+      const right = document.createElement('div');
+      right.className = 'parte_derecha';
+      right.setAttribute('data-area', 'right');
+      diente.appendChild(right);
 
-            odontograma.appendChild(diente);
+      const center = document.createElement('div');
+      center.className = 'parte_centro';
+      center.setAttribute('data-area', 'center');
+      diente.appendChild(center);
+
+      // Inicializamos en "blanco" (o "sano"?), aquí usamos "blanco" por defecto
+      toothStates[toothNumber] = {
+        top:    { label: "eliminar", color: "#ffffff" },
+        bottom: { label: "eliminar", color: "#ffffff" },
+        left:   { label: "eliminar", color: "#ffffff" },
+        right:  { label: "eliminar", color: "#ffffff" },
+        center: { label: "eliminar", color: "#ffffff" }
+      };
+
+      // Listeners de clic en cada zona
+      [top, bottom, left, right, center].forEach(zone => {
+        zone.addEventListener('click', (event) => {
+          event.stopPropagation();
+          abrirModal(toothNumber, zone.getAttribute('data-area'));
+        });
+      });
+
+      return diente;
+    }
+
+    // Renderizar los dientes en cada fila
+    function renderFila(arrayDientes, rowId) {
+      const rowContainer = document.getElementById(rowId);
+      arrayDientes.forEach(num => {
+        const dienteElem = crearDiente(num);
+        rowContainer.appendChild(dienteElem);
+      });
+    }
+
+    // Renderizamos las 4 filas
+    renderFila(fila1, 'row1');
+    renderFila(fila2, 'row2');
+    renderFila(fila3, 'row3');
+    renderFila(fila4, 'row4');
+
+    // --- Modal ---
+    const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
+    const infoDiente = document.getElementById('info-diente');
+    const selectEstado = document.getElementById('select-estado');
+    const btnAplicar = document.getElementById('btn-aplicar');
+    const btnCancelar = document.getElementById('modal-cancelar');
+
+    let currentTooth = null;
+    let currentArea  = null;
+
+    // Poblar <select> con las opciones de estado
+    (function cargarOpcionesEnSelect() {
+      estadoOpciones.forEach((op) => {
+        const optionEl = document.createElement('option');
+        optionEl.value = op.label;       // ejemplo: "caries"
+        optionEl.textContent = op.label; // lo que se muestra en el select
+        optionEl.setAttribute('data-color', op.color);
+        selectEstado.appendChild(optionEl);
+      });
+    })();
+
+    function abrirModal(toothNumber, area) {
+      currentTooth = toothNumber;
+      currentArea  = area;
+      infoDiente.textContent = `Diente ${toothNumber} - Zona: ${area}`;
+      modal.style.display = 'block';
+      overlay.style.display = 'block';
+
+      // Seleccionar la opción actual en el <select> según lo que tenga guardado
+      const estadoActual = toothStates[toothNumber][area]; 
+      // Buscamos la opción que coincida con .label
+      Array.from(selectEstado.options).forEach(option => {
+        if (option.value === estadoActual.label) {
+          option.selected = true;
         }
+      });
     }
 
-    // Manejar clic en las partes del diente
-    function manejarClick(event) {
-        const target = event.target;
+    // Botón "Aplicar": selecciona la opción del <select> y pinta la zona
+    btnAplicar.addEventListener('click', () => {
+      
+      const selectedValue = selectEstado.value; 
+      const selectedOption = selectEstado.querySelector(`option[value="${selectedValue}"]`);
+      if (!selectedOption) return;
 
-        // Validar que sea una sección
-        if (!target.classList.contains("seccion")) return;
+      // Obtenemos el color
+      const color = selectedOption.getAttribute('data-color');
 
-        // Guardar la parte seleccionada
-        parteSeleccionada = target;
+      // Actualizamos el objeto global
+      toothStates[currentTooth][currentArea] = {
+        label: selectedValue,
+        color: color
+      };
 
-        // Obtener datos del diente y parte
-        const parte = target.getAttribute("data-parte");
-        const diente = target.getAttribute("data-diente");
-
-        // Actualizar modal
-        document.getElementById("numeroDiente").innerText = diente;
-        document.getElementById("parteDiente").innerText = parte;
-
-        // Mostrar modal cerca del diente seleccionado
-        const modal = document.getElementById("opcionesModal");
-        modal.style.display = "block";
-        modal.style.left = `${event.pageX + 10}px`;
-        modal.style.top = `${event.pageY + 10}px`;
-    }
-
-    // Función para cerrar el modal
-    function cerrarModal() {
-        document.getElementById("opcionesModal").style.display = "none";
-        parteSeleccionada = null;
-    }
-
-    // Marcar la parte del diente seleccionada
-    function marcarDiente(accion) {
-        if (!parteSeleccionada) return;
-
-        let color = "";
-        switch (accion) {
-            case "fractura": color = "red"; break;
-            case "restauracion": color = "blue"; break;
-            case "empastado": color = "yellow"; break;
-            case "sano": color = "green"; break;
-            case "borrar": color = ""; break;
-        }
-
-        parteSeleccionada.style.backgroundColor = color;
-        cerrarModal();
-    }
-
-    // Inicializar odontograma
-    document.addEventListener("DOMContentLoaded", () => {
-        event.preventDefault();
-        generarOdontograma();
-     
-        odontograma.addEventListener("click", manejarClick);
+      // Pintamos visualmente
+      pintarZona(currentTooth, currentArea, color);
+      cerrarModal();
     });
-</script>
+
+    // Botón "Cancelar"
+    btnCancelar.addEventListener('click', cerrarModal);
+
+    function cerrarModal() {
+      
+      modal.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+
+    // Pintar una zona de un diente
+    function pintarZona(tooth, area, color) {
+      const dienteElem = document.querySelector(`.diente[data-diente='${tooth}']`);
+      if (!dienteElem) return;
+      const zonaElem = dienteElem.querySelector(`[data-area='${area}']`);
+      if (zonaElem) {
+        zonaElem.style.backgroundColor = color;
+      }
+    }
+
+    
+  </script>
+

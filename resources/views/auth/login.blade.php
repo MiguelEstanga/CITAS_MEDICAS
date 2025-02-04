@@ -123,9 +123,9 @@
                     @csrf
                     <div class=" ">
                         <label for="email" class="mb-4 text-white">
-                            Email
+                            Gmail
                         </label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Gmail">
                     </div>
 
                     <div class="mb-3">

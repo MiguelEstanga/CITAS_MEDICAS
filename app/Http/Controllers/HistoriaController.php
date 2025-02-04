@@ -23,7 +23,7 @@ class HistoriaController extends Controller
     public function index($id)
     {
         $usuario =  User::find($id);
-      
+    
         return view('historia_medica.index', [
             'presupuestos' => $usuario->presupuestos ?? [],
             'usuario' => $usuario ?? [],
@@ -37,11 +37,11 @@ class HistoriaController extends Controller
     {
         $presupuesto = Presupuesto::find($id);
         $odontograma = json_decode($presupuesto->odontograma->data, true);
-       
+         $presupuesto->user;
     
         return view('historia_medica.ver_historia_medica', [
             'presupuesto' => $presupuesto,
-            'odontograma' => $odontograma
+            'datosOdontograma' => $odontograma
         ]);
     }
 

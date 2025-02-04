@@ -11,6 +11,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\MetodoDePago;
 use App\Models\Odontogram;
+use App\Models\EstadoBucal;
 class PresupuestoController extends Controller
 {   
     public function odontograma_store(Request $request)
@@ -43,7 +44,23 @@ class PresupuestoController extends Controller
                 'id_user' =>  $request->id_usuario,
                 'metodo_de_pago' => $metodo->name,
                 'costo' => $request->costo,
-                'abono' => $request->abono
+                'abono' => $request->abono,
+                'tratamiento' => $request->tratamiento,
+                'motivo_consulta' => $request->motivo_consulta
+            ]);
+
+            EstadoBucal::create([
+                'labios' => $request->labios,
+                'lengua' => $request->lengua,
+                'encimas' => $request->encimas,
+                'atm' => $request->atm,
+                'carrillos' => $request->carrillos,
+                'examenes' => $request->examenes,
+                'vosticulos' => $request->vosticulos,
+                'paladar' => $request->paladar,
+                'piso_lengua' => $request->piso_lengua,
+                'oculacion' => $request->oculacion,
+                'id_presupuesto' => $presupuesto->id
             ]);
             $odontograma = new Odontogram();
             $odontograma->data =  json_encode($request->odontograma);
@@ -60,6 +77,7 @@ class PresupuestoController extends Controller
             );
             return back()->with('mensaje', 'Presupuesto creado exitosamente');
         } catch (Exception $e) {
+            Log::error($request);
             Log::error($e->getMessage());
             return $e->getMessage();
         }
@@ -83,14 +101,14 @@ class PresupuestoController extends Controller
     }
     public function update($id, Request $request)
     {
-
+        
         try {
             $presupuesto = Presupuesto::findOrFail($id);
             $presupuesto->fecha = $request->fecha;
             $presupuesto->tratamiento = $request->tratamiento;
             $presupuesto->costo = $request->costo;
             $presupuesto->abono = $request->abono;
-            $presupuesto->saldo = $request->saldo;
+            $presupuesto->saldo = $request->costo - $request->abono;
         
             $presupuesto->save();
             return back()->with('mensaje', 'Presupuesto actualizado exitosamente');
@@ -99,45 +117,32 @@ class PresupuestoController extends Controller
             return $e->getMessage();
         }
     }
-
-    public function persupuesto_pdf($control_cita_id)
+    public function ver_historia_medica($id)
     {
-        $control_citas = ControlCita::where('id', $control_cita_id)->first();
-        $historia_medica =  $control_citas;
-        $user =  $control_citas->evento->paciente;
-        $html = view('pdf.presupuesto', [
-            'presupuesto' =>  $control_citas->presupuesto,
-            'user' => $user,
-            'historia_medica' => $historia_medica
-        ])->render();
-        // 4) Configurar las opciones de Dompdf
-        $options = new Options();
-        // Por ejemplo, si usas fuentes con tildes/caracteres especiales, 
-        // puedes cambiar la fuente predeterminada (o habilitar isRemoteEnabled si necesitas imágenes remotas):
-        $options->set('defaultFont', 'DejaVu Sans');
-        // $options->set('isRemoteEnabled', true);  // Útil si cargas imágenes desde URLs absolutas
-
-        // 5) Instanciar Dompdf con las opciones indicadas
-        $dompdf = new Dompdf($options);
-
-        // 6) Cargar el HTML
-        $dompdf->loadHtml($html);
-
-        // 7) (Opcional) Ajustar tamaño de papel y orientación
-        $dompdf->setPaper('A4', 'portrait'); // 'portrait' (vertical) o 'landscape' (horizontal)
-
-        // 8) Renderizar el PDF
-        $dompdf->render();
-        $pdfContent = $dompdf->output();
-
-        // Construir respuesta con header "inline"
-        return response($pdfContent, 200)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'inline; filename="reporte.pdf"');
-        // 9) Retornar el PDF:
-        //    - Para mostrarlo en el navegador, usamos `stream()`.
-        //    - Para forzar la descarga, usaríamos `->download()` o algo similar.
-        return $dompdf->stream('reporte_' . now()->format('Ymd_His') . '.pdf');
+        $presupuesto = Presupuesto::find($id);
+        $odontograma = json_decode($presupuesto->odontograma->data, true);
+        $estado = EstadoBucal::where('id_presupuesto', $id)->first();
+       
+    
+        return view('historia_medica.ver_historia_medica', [
+            'presupuesto' => $presupuesto,
+            'datosOdontograma' => $odontograma,
+            'estado' => $estado
+        ]);
+    }
+    public function persupuesto_pdf($id)
+    {
+       $presupuesto = Presupuesto::where('id', $id)->first();
+       $odontograma = json_decode($presupuesto->odontograma->data, true);
+        $estado = EstadoBucal::where('id_presupuesto', $id)->first();
+       return ReporteController::Pdf([
+           'view' => "historia_medica.pdf.odontograma",
+           'var' => [
+              'datosOdontograma' => $odontograma,
+              'presupuesto' => $presupuesto,
+              'estado' => $estado
+           ]
+       ]);
     }
 
     public function eliminar($id)

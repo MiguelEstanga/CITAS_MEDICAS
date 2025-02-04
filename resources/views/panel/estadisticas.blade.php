@@ -8,55 +8,13 @@
                     <h3>Nuevos Pacientes</h3>
                 </div>
                 <div class="card-body d-flex justify-content-center align-items-center">
-                    <h1 class="text-center">{{ $newUsersCount }}</h1>
+                 
                     <div class="" style="width: 150px;">
                         <canvas id="usersPieChart"></canvas>
-                        <p class="text-center mt-3">Usuarios registrados en los últimos 7 días</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h3>Generar reporte de usuarios</h3>
-                </div>
-                <div class="card-body ">
-
-                    <div class="">
-                        <form action="{{ route('reportes.reporte_usuario') }}" >
-                          
-                            <div class="form-check form-switch mb-3">
-                                <input class="form-check-input" name="all" type="checkbox" role="switch"
-                                    id="flexSwitchCheckDefault">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Todos los usuarios</label>
-                            </div>
-                            <x-input type="date" name="fecha_inicio" label="Nombre del reporte"
-                                placeholder="Nombre del reporte" class="mb-3" />
-                            <x-input type="date" name="fecha_fin" label="Fecha del reporte"
-                                placeholder="Fecha del reporte" class="mb-3" />
-                            <button class="btn btn-default auto" type="submit">Generar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h3>Generar reporte de Ventas</h3>
-                </div>
-                <div class="card-body ">
-                    <div class="">
-                        <form action="{{ route('reportes.reporte_ventas') }}" >
-                          
-                            <div class="form-check form-switch mb-3">
-                                <input class="form-check-input" name="all" type="checkbox" role="switch"
-                                    id="flexSwitchCheckDefault">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Todas las ventas</label>
-                            </div>
-                            <x-input type="date" name="fecha_inicio" label="Nombre del reporte"
-                                placeholder="Nombre del reporte" class="mb-3" />
-                            <x-input type="date" name="fecha_fin" label="Fecha del reporte"
-                                placeholder="Fecha del reporte" class="mb-3" />
-                            <button class="btn btn-default auto" type="submit">Generar</button>
-                        </form>
+                        <p class="text-center mt-3">Pacientes registrados en los últimos 7 días  <span style="color:red"> {{ $newUsersCount }}</span></p>
+                        <p class="text-center mt-3">
+                            Promedio de edad: {{ $edadPromedio }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -64,16 +22,17 @@
 
         <!-- Panel derecho -->
         <div class="estadisticas_derecha">
-            <!-- Gráfico de Ventas -->
-            <div class="card">
-                <div class="card-header">
-                    <h3>Ventas</h3>
+            <div class="d-flex gap-4 flex-wrap justify-content-center mb-4">
+                <!-- Gráfico 1: Costos vs Abonos -->
+                <div class="chart-container" style="height: 400px; width: 400px">
+                    <canvas id="graficoCostos"></canvas>
                 </div>
-                <div class="card-body">
-                    <canvas id="ventasChart"></canvas>
+
+                <!-- Gráfico 2: Saldos vs Abonos -->
+                <div class="chart-container" style="height: 400px; width: 400px">
+                    <canvas id="graficoSaldos"></canvas>
                 </div>
             </div>
-
             <!-- Gráfico de Presupuestos -->
             <div class="card">
                 <div class="card-header">
@@ -135,95 +94,126 @@
             }
         });
 
-        // Gráfico de Ventas (Línea con Flechas)
-
-        const labelsventas = @json($labelsA); // Fechas
-        const dataModelA = @json($ventas); // Datos para las ventas
-
-        const ctxModelA = document.getElementById('ventasChart').getContext('2d');
-        new Chart(ctxModelA, {
-            type: 'bar', // Cambiamos el tipo de gráfico a 'bar'
-            data: {
-                labels: labelsventas, // Fechas (eje X)
-                datasets: [{
-                    label: 'Ventas',
-                    data: dataModelA, // Cantidad de ventas por día
-                    backgroundColor: 'rgba(255, 0, 0, 0.5)', // Color de las barras (rojo con transparencia)
-                    borderColor: 'rgba(255, 0, 0, 1)', // Borde de las barras (rojo sólido)
-                    borderWidth: 1 // Grosor del borde de las barras
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top' // Posición de la leyenda
-                    },
-                    tooltip: {
-                        enabled: true // Habilitar el tooltip al pasar sobre las barras
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Fecha' // Título del eje X
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Cantidad de Ventas' // Título del eje Y
-                        },
-                        beginAtZero: true // Comienza desde cero
-                    }
-                }
-            }
-        });
 
 
-        // Gráfico de Presupuestos (Pastel)
-        const totalPresupuestos = @json($totalPresupuestos);
-        const totalCancelado = @json($totalCancelado);
-        const ctxPresupuestos = document.getElementById('presupuestosChart').getContext('2d');
+
 
         // Verificar si el total ha sido completamente cancelado
         let backgroundColors;
 
-        if (totalCancelado === totalPresupuestos) {
-            // Todo está cancelado, la gráfica será completamente verde
-            backgroundColors = ['rgba(75, 192, 75, 0.7)', 'rgba(75, 192, 75, 0.7)']; // Verde
-        } else {
-            // Mostrar el total y lo cancelado con colores diferentes
-            backgroundColors = ['rgba(75, 192, 75,  0.7)', 'rgba(203, 67, 53 , 0.7)'];
-        }
 
-        new Chart(ctxPresupuestos, {
-            type: 'pie',
+        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+        // Obtener el contexto del canvas
+        const ctxVentas = document.getElementById('presupuestosChart').getContext('2d');
+
+        new Chart(ctxVentas, {
+            type: 'bar',
             data: {
-                labels: ['Cancelado', 'No cancelado'],
+                labels: meses,
                 datasets: [{
-                    data: [totalPresupuestos, totalCancelado],
-                    backgroundColor: backgroundColors,
-                    borderWidth: 1
+                    label: 'Ventas mensuales',
+                    data: @json($presupuestos),
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)', // Color azul para las barras
+                    borderColor: 'rgba(54, 162, 235, 1)', // Borde azul
+                    borderWidth: 1,
+                    borderRadius: 5, // Bordes redondeados en las barras
+                    barThickness: 30 // Ancho de las barras
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Monto en USD'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
                 plugins: {
+                    legend: {
+                        position: 'top',
+                    },
                     tooltip: {
                         callbacks: {
-                            // Formato para mostrar los valores en el tooltip
-                            label: function(tooltipItem) {
-                                const label = tooltipItem.label || '';
-                                const value = tooltipItem.raw;
-                                return `${label}: ${value}`;
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD'
+                                    }).format(context.parsed.y);
+                                }
+                                return label;
                             }
                         }
                     }
                 }
             }
+        });
+
+        // Configuración común para ambos gráficos
+        const configComun = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(2);
+                            return `${label}: $${value.toLocaleString()} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        };
+
+        // Gráfico 1: Costos vs Abonos
+        new Chart(document.getElementById('graficoCostos'), {
+            type: 'pie',
+            data: {
+                labels: ['Costos Totales', 'Recaudación'],
+                datasets: [{
+                    data: [@json($totalCosto), @json($totalAbono)],
+                    backgroundColor: ['#ff6384', '#4bc0c0'],
+                    borderWidth: 2
+                }]
+            },
+            options: configComun
+        });
+
+        // Gráfico 2: Saldos vs Abonos
+        new Chart(document.getElementById('graficoSaldos'), {
+            type: 'pie',
+            data: {
+                labels: ['Saldo Pendiente', 'Abonos Realizados'],
+                datasets: [{
+                    data: [@json($totalSaldo), @json($totalAbono)],
+                    backgroundColor: ['#ff6384', '#4bc0c0'],
+                    borderWidth: 2
+                }]
+            },
+            options: configComun
         });
     </script>
 @endsection
