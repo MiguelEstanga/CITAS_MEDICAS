@@ -133,6 +133,7 @@ class PresupuestoController extends Controller
     public function persupuesto_pdf($id)
     {
        $presupuesto = Presupuesto::where('id', $id)->first();
+       
        $odontograma = json_decode($presupuesto->odontograma->data, true);
         $estado = EstadoBucal::where('id_presupuesto', $id)->first();
        return ReporteController::Pdf([

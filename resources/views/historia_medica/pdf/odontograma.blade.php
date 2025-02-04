@@ -338,7 +338,7 @@
             </tr>
         </tbody>
     </table>
-    <table border="1" cellspacing="0" cellpadding="6" width="100%">
+    <table border="1" cellspacing="0" cellpadding="6" width="100%"style="margin-top:20px;">
         <thead>
           <tr>
             <th>Fecha</th>
