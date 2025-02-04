@@ -309,28 +309,7 @@
         <!-- Añade tantas categorías como necesites -->
     </div>
     <!-- Tabla final (ejemplo) -->
-    <table border="1" cellspacing="0" cellpadding="6" width="100%">
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>A cuenta</th>
-          <th>Saldo</th>
-          <th>Costo</th>
-          <th>Abono</th>
-          <th>Tratamiento</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ $presupuesto->fecha }}</td>
-          <td>{{ $presupuesto->a_cuenta }}</td>
-          <td>{{ $presupuesto->saldo }}</td>
-          <td>{{ $presupuesto->costo }}</td>
-          <td>{{ $presupuesto->abono }}</td>
-          <td>{{ $presupuesto->tratamiento }}</td>
-        </tr>
-      </tbody>
-    </table>
+  
     <table  border="1" cellspacing="0" cellpadding="6" width="100%" style="margin-top:20px;">
         <thead>
             <tr>
@@ -359,6 +338,28 @@
             </tr>
         </tbody>
     </table>
+    <table border="1" cellspacing="0" cellpadding="6" width="100%">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>A cuenta</th>
+            <th>Saldo</th>
+            <th>Costo</th>
+            <th>Abono</th>
+            <th>Tratamiento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ $presupuesto->fecha }}</td>
+            <td>{{ $presupuesto->a_cuenta }}</td>
+            <td>{{ $presupuesto->saldo }}</td>
+            <td>{{ $presupuesto->costo }}</td>
+            <td>{{ $presupuesto->abono }}</td>
+            <td>{{ $presupuesto->tratamiento }}</td>
+          </tr>
+        </tbody>
+      </table>
     <!-- Campos de firmas -->
     <div class="firma-campos">
         <div>Firma del Paciente</div>

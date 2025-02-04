@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('estado_bucals', function (Blueprint $table) {
             $table->id();
-            $table->string('abios')->nullable()->max(100);
+            $table->string('labios')->nullable()->max(100);
             $table->string('lengua')->nullable()->max(100);
             $table->string('encimas')->nullable()->max(100);
             $table->string('atm')->nullable()->max(100);
