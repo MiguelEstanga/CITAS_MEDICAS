@@ -1,11 +1,13 @@
 
-  <style>
+<style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
     }
     h1 {
       text-align: center;
+      font-size: 24px;
+      margin-bottom: 30px;
     }
 
     /* Contenedor general de todas las filas */
@@ -29,11 +31,16 @@
       position: relative;
       width: 70px;  /* puedes ajustar a tu gusto */
       height: 70px;
-      border: 1px solid #000;
-      border-radius: 40px;
+      border: 1px solid #ccc;
+      border-radius: 50%;
       cursor: pointer;
       user-select: none;
       box-sizing: border-box;
+      transition: all 0.3s ease-in-out;
+    }
+    .diente:hover {
+      transform: scale(1.1);
+      border-color: #007bff;
     }
     .diente .numero_diente {
       position: absolute;
@@ -61,8 +68,7 @@
       transform: translateX(-50%);
       width: 36px;
       height: 18px;
-      border-top-left-radius: 39px;
-      border-top-right-radius: 39px;
+      border-radius: 50%;
     }
     .parte_inferior {
       bottom: 0;
@@ -70,24 +76,21 @@
       transform: translateX(-50%);
       width: 36px;
       height: 18px;
-      border-bottom-left-radius: 39px;
-      border-bottom-right-radius: 39px;
+      border-radius: 50%;
     }
-    .parte_izquierda {
-      top: 18px;
-      left: 6px;
-      width: 24px;
-      height: 34px;
-      border-top-left-radius: 39px;
-      border-bottom-left-radius: 39px;
-    }
+    .parte_izquierda,
     .parte_derecha {
       top: 18px;
-      right: 6px;
       width: 24px;
       height: 34px;
-      border-top-right-radius: 39px;
-      border-bottom-right-radius: 39px;
+    }
+    .parte_izquierda {
+      left: 6px;
+      border-radius: 10px;
+    }
+    .parte_derecha {
+      right: 6px;
+      border-radius: 10px;
     }
     .parte_centro {
       top: 18px;
@@ -103,22 +106,28 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #f2f2f2;
+      background: #ffffff;
       padding: 20px;
-      border: 2px solid #666;
+      border: 2px solid #007bff;
       z-index: 9999;
-      border-radius: 8px;
-      max-width: 300px;
+      border-radius: 10px;
+      max-width: 320px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.3s ease-out;
     }
     #modal h2 {
       margin-top: 0;
       font-size: 18px;
+      color: #007bff;
     }
     #modal select {
       width: 100%;
       margin-bottom: 15px;
-      padding: 6px;
+      padding: 8px;
       font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f8f8f8;
     }
 
     /* Fondo oscuro detrás del modal */
@@ -131,6 +140,7 @@
       height: 100vh;
       background: rgba(0,0,0,0.5);
       z-index: 9998;
+      animation: fadeIn 0.3s ease-out;
     }
 
     .botones {
@@ -141,9 +151,27 @@
       margin: 0 10px;
       padding: 10px 20px;
       cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+    .botones button:hover {
+      background-color: #0056b3;
     }
 
-  </style>
+    /* Animación de fadeIn para el modal y overlay */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+</style>
+
 </head>
 <body>
   
@@ -188,17 +216,8 @@
 
     // 2) Opciones de estado/colores (podrías cambiar los colores a tu gusto)
     //    label = nombre del estado, color = color que se pintará
-    const estadoOpciones = [
-      { label: "empastizado",      color: "#B5651D" },
-      { label: "caries",           color: "#FF0000" },
-      { label: "sano",             color: "#00FF00" },
-      { label: "extraccion",       color: "#000000" },
-      { label: "odontopediatria",  color: "#FF69B4" },
-      { label: "ortodoncia",       color: "#0000FF" },
-      { label: "protesis dental",  color: "#8A2BE2" },
-      { label: "endodoncia",       color: "#FFA500" },
-      { label: "eliminar",         color: "#FFFFFF" } // "blanco" para resetear
-    ];
+    
+    const estadoOpciones = @json($tratamientos);
 
     // 3) Objeto global para almacenar el estado de cada ZONA de cada diente
     //    Estructura: toothStates[diente] = {

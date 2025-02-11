@@ -19,6 +19,7 @@ class CitasController extends Controller
     {
         
         return view('citas.index' , [
+            'pacientes' => User::role('paciente')->get()
         ]);
     }
 

@@ -14,7 +14,7 @@ use App\Models\Presupuesto;
 use App\Http\Controllers\ReporteController;
 use App\Models\MetodoDePago;
 use Spatie\Browsershot\Browsershot;
-
+use App\Models\OpcionesTratamiento;
 class HistoriaController extends Controller
 {
     /**
@@ -23,12 +23,13 @@ class HistoriaController extends Controller
     public function index($id)
     {
         $usuario =  User::find($id);
-    
+      
         return view('historia_medica.index', [
             'presupuestos' => $usuario->presupuestos ?? [],
             'usuario' => $usuario ?? [],
             'id_usuario' => $usuario->id,
-            'metodo_pagos' => MetodoDePago::all() ?? []
+            'metodo_pagos' => MetodoDePago::all() ?? [],
+            'tratamientos' => OpcionesTratamiento::all() ?? []
         ]);
     }
 
@@ -37,7 +38,7 @@ class HistoriaController extends Controller
     {
         $presupuesto = Presupuesto::find($id);
         $odontograma = json_decode($presupuesto->odontograma->data, true);
-         $presupuesto->user;
+        $presupuesto->user;
     
         return view('historia_medica.ver_historia_medica', [
             'presupuesto' => $presupuesto,

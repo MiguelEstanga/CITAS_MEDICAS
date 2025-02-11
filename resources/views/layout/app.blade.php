@@ -103,7 +103,14 @@
                             href="{{ route('estadisticas.index') }}">Estadísticas</a>
                     </li>
                 @endcan
-
+                <li class="nav-item {{ request()->segment(1) == 'medo-de-pago' ? 'active' : '' }}">
+                    <a class="nav-link {{ request()->segment(1) == 'medo-de-pago' ? 'active' : '' }}"
+                        href="{{ route('metodo-de-pago.index') }}">Metodo de Pago</a>
+                </li>
+                <li class="nav-item {{ request()->segment(1) == 'tratamientos' ? 'active' : '' }}">
+                    <a class="nav-link {{ request()->segment(1) == 'tratamientos' ? 'active' : '' }}"
+                        href="{{ route('opciones-tratamiento.index') }}">Tratamientos</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{ route('logout') }}">Cerrar Sesión</a>
                 </li>

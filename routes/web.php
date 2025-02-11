@@ -8,15 +8,17 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HistoriaController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\EventosCalendarController;
-
 use App\Http\Controllers\PacientesController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\MetodoDePagoController;
 use App\Http\Controllers\PresupuestoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\OpcionesTratamientoController;
+
 Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -26,7 +28,19 @@ Route::get('reporte/historia/{id}' , [ReporteController::class, 'presupuesto_rep
 
 Route::group(['middleware' => ['auth']], function () {
 
+  Route::prefix('tratamientos')->group(function () {
+      Route::get('/', [OpcionesTratamientoController::class, 'index'])->name('opciones-tratamiento.index');
+      Route::post('/crear', [OpcionesTratamientoController::class, 'store'])->name('opciones-tratamiento.store');
+      Route::put('/actulizar', [OpcionesTratamientoController::class, 'update'])->name('opciones-tratamiento.update');
+      Route::get('/eliminar/{id}', [OpcionesTratamientoController::class, 'destroy'])->name('opciones-tratamiento.destroy');
+  });
 
+  Route::prefix('/medo-de-pago')->group(function () {
+    Route::get('/', [MetodoDePagoController::class, 'index'])->name('metodo-de-pago.index');
+    Route::post('/creat-metodo-pago', [MetodoDePagoController::class, 'store'])->name('metodo-de-pago.store');
+    Route::put('/editar-metodo-de-pago', [MetodoDePagoController::class, 'update'])->name('metodo-de-pago.update');
+    Route::get('eliminar-metodo-pago/{id}', [MetodoDePagoController::class, 'destroy'])->name('metodo-de-pago.destroy');
+  });
   //panel
   Route::prefix('panel')->group(function () {
       Route::get('/', [PanelController::class, 'index'])->name('panel.index');
@@ -47,8 +61,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 
   Route::prefix('citas')->group(function () {
-  
-    
     Route::get('/mis-citas', [CitasController::class, 'mis_citas'])->name('citas.mis_citas');
     Route::get('/control-citas/{id}' , [CitasController::class, 'control_citas'])->name('citas.control_citas');
   });

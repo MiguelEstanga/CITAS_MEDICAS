@@ -1,6 +1,7 @@
 @extends('layout.app')
 
 @section('content')
+
     <style>
         .fc-day-grid-event .fc-all-day {
             display: none;
@@ -25,11 +26,14 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="input">
-                            <label for="titlo" class="form-label mb-2">Título</label>
-                            <input type="text" id="titlo" name="titulo" class="form-control"
-                                placeholder="Título de la cita">
+                            <label for="id_paciente" class="form-label mb-2">Paciente</label>
+                            <select class="form-control select2" name="id_paciente" id="id_paciente">
+                                @foreach ($pacientes as $paciente)
+                                    <option value="{{ $paciente->id }}">{{ $paciente->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-
+                        <x-input name="titulo" label="Título" required="true" value="{{ old('titulo') }}"  id="titlo" :reqiored="true"  />
                         <div class=" input">
                             <label for="createDate" class="form-label mb-2">Fecha</label>
                             <input type="date" id="createDate" name="fecha" class="form-control">
@@ -125,6 +129,7 @@
                     prev: '<',
                     next: '>'
                 },
+                allDayText: 'Todo el día',
 
                 // Ruta que devuelve los eventos en JSON
                 events: `{{ route('eventos.eventos', user()->id) }}`,
@@ -296,5 +301,7 @@
                 }
             });
         }
+
+     
     </script>
 @endsection

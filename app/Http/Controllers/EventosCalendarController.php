@@ -16,25 +16,26 @@ class EventosCalendarController extends Controller
     public function eventos($usuario_id)
     {
         $usuario = User::find($usuario_id);
+        Log::info($usuario->events);
         return response()->json($usuario->events);
     }
     public function store(Request $request)
     {
-         // return $request->all();
+       
         try {
             $start = "{$request->fecha} {$request->hora_inicio}";
             $end = "{$request->fecha} {$request->hora_fin}";
           
-          
+            $user = User::find($request->id_paciente);
             $evento = Eventos::create([
-                'title' => $request->titulo,
+                'title' => $request->titulo . ' - ' . $user->name . ' - ' . $user->name,
                 'start' => $start,
                 'end' => $end,
-                'id_user' => Auth::user()->id,
-               
+                'id_user' => user()->id,
+                
                 'color' => $request->color,
             ]);
-        
+           
            
             return back();
         } catch (Exception $e) {

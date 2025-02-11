@@ -26,26 +26,32 @@
         }
 
         .container.formulario-login {
-            background:var(--color_menu);
+            background:#333;
             max-width: 420px;
             width: 100%;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            box-shadow: #000 0px 0px 1px;
+            color: #333;
         }
-
+        .container.formulario-login  label{
+            color: #fff!important;
+        }
         /* Sección del logo o imagen */
         .main_login {
+            
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: var(--color-segundario);
-            padding: 1.5rem 1rem;
+            padding: 1.5rem 1.5rem;
+            position: relative;
+            top: 30px;
+
         }
 
         .main_login img {
-            width: 100%;
+            width: 70%;
    
             height: auto;
         }
@@ -62,10 +68,7 @@
             gap: 1rem;
         }
 
-        label {
-            font-weight: bold;
-            color: var(--color_texto);
-        }
+      
 
         input.form-control {
             width: 100%;
@@ -115,7 +118,7 @@
     <div class="loginContainer">
         <div class="container formulario-login">
             <div class="main_login">
-                <img src="{{asset('storage/sistema/logo.png')}}" alt="{{asset('sistema/logo.png')}}" width="100px" height="100px">
+                <img src="{{asset('storage/sistema/icono_diente.png')}}" alt="{{asset('sistema/logo.png')}}" width="100px" height="100px">
             </div>
             <div class="formulario-body">
                 <form wire:submit.prevent="login" class="flex flex-col justify-center items-center" method="post"
