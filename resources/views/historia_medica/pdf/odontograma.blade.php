@@ -320,7 +320,7 @@
                 <th>Carrillos</th>
                 <th>Vosticulos</th>
                 <th>Paladar</th>
-                <th>Piso Lengua</th>
+                <th>Piso de Lengua</th>
                 <th>Oculacion</th>
             </tr>
         </thead>

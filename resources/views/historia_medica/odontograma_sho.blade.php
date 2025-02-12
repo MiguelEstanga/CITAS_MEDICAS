@@ -127,7 +127,7 @@
                     <th>Carrillos</th>
                     <th>Vestibulos </th>
                     <th>Paladar</th>
-                    <th>Piso Lengua</th>
+                    <th>Piso de lengua</th>
                     <th>Oculacion</th>
                 </tr>
             </thead>

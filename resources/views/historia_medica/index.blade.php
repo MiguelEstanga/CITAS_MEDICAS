@@ -105,11 +105,11 @@
                         :required="true" />
                 </div>
                 <div class="col-2">
-                    <x-input name="piso_lengua" label="Piso Lengua" required="true" value="{{ old('piso_lengua') }}"
+                    <x-input name="piso_lengua" label="Piso deLengua" required="true" value="{{ old('piso_lengua') }}"
                         :required="true" />
                 </div>
                 <div class="col-2">
-                    <x-input name="oculacion" label="Oculación" required="true" value="{{ old('oculacion') }}"
+                    <x-input name="oculacion" label="Oclusión " required="true" value="{{ old('oculacion') }}"
                         :required="true" />
                 </div>
             </div>
