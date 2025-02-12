@@ -51,7 +51,7 @@
                 <li class="nav-item {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"">
                     <a class="nav-link  text-white {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"
                         href="{{ route('usuarios.index', 'usuario') }}" style="background-color: inherit;">
-                        Usuarios
+                        Usuario
                     </a>
                 </li>
             @endcan

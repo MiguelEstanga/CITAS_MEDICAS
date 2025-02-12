@@ -125,7 +125,7 @@
                     <th>Encimas</th>
                     <th>Atm</th>
                     <th>Carrillos</th>
-                    <th>Vosticulos</th>
+                    <th>Vestibulos </th>
                     <th>Paladar</th>
                     <th>Piso Lengua</th>
                     <th>Oculacion</th>

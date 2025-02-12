@@ -7,7 +7,7 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Diagnostico</th>
+            <th>Diagnóstico</th>
             <th>Observaciones</th>
             <th>Fecha</th>
             <th>A/Cuenta</th>
