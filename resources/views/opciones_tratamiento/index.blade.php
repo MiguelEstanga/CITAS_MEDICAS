@@ -33,7 +33,7 @@
     </x-modal>
     <div class="table-container">
         <h4 class=" alert">
-            Metodos de pago
+           Tratamientos
         </h4>
         @include('opciones_tratamiento.table.table')
     </div>
