@@ -91,13 +91,11 @@
                 @endcan
 
                 @can('v_admnistrador')
-                    <li class="nav-item {{ request()->segment(1) == 'venta' ? 'active' : '' }}">
+                    <!--li class="nav-item {{ request()->segment(1) == 'venta' ? 'active' : '' }}">
                         <a class="nav-link {{ request()->segment(1) == 'venta' ? 'active' : '' }}"
                             href="{{ route('venta.index') }}">Ventas</a>
-                    </li>
-                @endcan
-
-                @can('v_asistente_general')
+                    </li-->
+               
                     <li class="nav-item {{ request()->segment(1) == 'estadisticas' ? 'active' : '' }}">
                         <a class="nav-link {{ request()->segment(1) == 'estadisticas' ? 'active' : '' }}"
                             href="{{ route('estadisticas.index') }}">Estadísticas</a>
