@@ -83,12 +83,12 @@
                     </li>
                 @endcan
 
-                @can('v_admnistrador')
-                    <li class="nav-item {{ request()->segment(1) == 'servicios' ? 'active' : '' }}">
+               
+                    <!--li class="nav-item {{ request()->segment(1) == 'servicios' ? 'active' : '' }}">
                         <a class="nav-link {{ request()->segment(1) == 'servicios' ? 'active' : '' }}"
                             href="{{ route('servicios.index') }}">Servicios</a>
-                    </li>
-                @endcan
+                    </li-->
+               
 
                 @can('v_admnistrador')
                     <!--li class="nav-item {{ request()->segment(1) == 'venta' ? 'active' : '' }}">
