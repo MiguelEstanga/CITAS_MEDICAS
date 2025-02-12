@@ -9,7 +9,7 @@
    <table class="">
        <thead>
            <tr>
-               <th>Diagnostico</th>
+               <th>Diagnóstico</th>
                <th>Observacion</th>
                <th>Fecha</th>
                <th>A cuenta</th>

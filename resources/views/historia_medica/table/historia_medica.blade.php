@@ -1,7 +1,7 @@
 <table id="historiaTable" class="table  " style="width:100% ; position: relative;">
 
     <div class="h4 historia_medica d-flex justify-content-between align-items-center gap-2 mb-4">
-        Historia Medica
+        Historia dental
 
     </div>
     <thead>
@@ -15,7 +15,7 @@
             <th>Abono BS</th>
             <th>Saldo BS</th>
             <th>Cancelado</th>
-            <th>Cancelar</th>
+            <th>Pagado</th>
             <th>Acciones</th>
         </tr>
     </thead>

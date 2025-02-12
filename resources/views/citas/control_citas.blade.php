@@ -15,7 +15,7 @@
                 </button>
             @else
                 <button class=" btn btn-outline-primary" disabled data-bs-toggle="modal" data-bs-target="#modal1"> Editar
-                    Historia Medica
+                    Historia dental
                     del paciente
                 </button>
             @endif

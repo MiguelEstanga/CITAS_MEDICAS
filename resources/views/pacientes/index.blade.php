@@ -22,7 +22,7 @@
         @include('pacientes.table.usuarios')
     </div>
     @php
-        $type === 'paciente' ? ($title = 'Registrar paciente') : ($title = 'Registrar usuarios');
+        $type === 'paciente' ? ($title = 'Registrar paciente') : ($title = 'Registrar usuario');
     @endphp
     <x-modal id="modal1" :title="$title">
         <form class="form-horizontal" action="{{ route('admin.user.store') }}" method="POST" enctype="multipart/form-data">

@@ -61,7 +61,7 @@
         <thead>
             <tr>
                 <th>N</th>
-                <th>Articulo</th>
+                <th>Artículo </th>
                 <th>Descripción</th>
                 <th>Precio en Bs</th>
                 <th>Cantidad</th>

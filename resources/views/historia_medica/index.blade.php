@@ -28,7 +28,7 @@
         </h2>
         <form action="" method="POST" id="formHistoria">
             @csrf
-            <x-input name="diagnostico" label="Diagnostico" required="true" value="{{ old('diagnostico') }}"
+            <x-input name="diagnostico" label="Diagnóstico" required="true" value="{{ old('diagnostico') }}"
                 :required="true" />
             <x-input name="observacion" label="Observación" required="true" value="{{ old('observacion') }}"
                 :required="true" />

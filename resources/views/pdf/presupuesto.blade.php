@@ -77,7 +77,7 @@
         <thead>
             <tr>
                 <th>Fecha</th>
-                <th>Diagnostico</th>
+                <th>Diagnóstico</th>
                 <th>Observaciones</th>
                 <th>Acuenta</th>
                 <th>Saldo</th>

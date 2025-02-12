@@ -178,22 +178,22 @@
                 <strong>Tel/Cel:</strong> {{ $presupuesto->user->telefono ?? '__________' }}
             </td>
         </tr>
-        <tr>
+        <!--tr>
             <td colspan="3">
                 <strong>Domicilio:</strong> {{ $presupuesto->user->domicilio ?? '_________________________' }}
             </td>
-        </tr>
+        </tr-->
         
         <tr>
             <td colspan="3" >
                 <strong >Antecedentes Familiares:</strong> {{ $presupuesto->user->antecedentes_familiares ?? '_________________________' }}
             </td>
         </tr>
-        <tr>
+        <!--tr>
             <td colspan="3">
                 <strong>Motivo de Consulta:</strong> {{ $presupuesto->user->motivo_consulta ?? '_________________________' }}
             </td>
-        </tr>
+        </tr-->
     </table>
   
        
