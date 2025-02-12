@@ -93,7 +93,7 @@
 
             <div class="row container" style="margin: auto;">
                 <div class="col-2">
-                    <x-input name="vosticulos" label="Vosticulos" required="true" value="{{ old('vosticulos') }}"
+                    <x-input name="vosticulos" label="Vestibulos " required="true" value="{{ old('vosticulos') }}"
                         :required="true" />
                 </div>
                 <div class="col-2">
@@ -105,7 +105,7 @@
                         :required="true" />
                 </div>
                 <div class="col-2">
-                    <x-input name="piso_lengua" label="Piso deLengua" required="true" value="{{ old('piso_lengua') }}"
+                    <x-input name="piso_lengua" label="piso de lengua" required="true" value="{{ old('piso_lengua') }}"
                         :required="true" />
                 </div>
                 <div class="col-2">

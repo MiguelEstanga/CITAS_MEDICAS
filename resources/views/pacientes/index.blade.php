@@ -78,7 +78,7 @@
                 </div>
             @endif
             <div class="form-group">
-                <x-input name="cedula" :required="true" label="Cedula" type="number" placeholder="Cedula" />
+                <x-input name="cedula" :required="true" label="Cèdula" type="number" placeholder="Cédula" />
                 @error('cedula')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -90,7 +90,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <x-input name="telefono" :required="true" label="Telefono" type="number" placeholder="telefono" />
+                <x-input name="telefono" :required="true" label="Télefono" type="number" placeholder="telefono" />
                 @error('telefono')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

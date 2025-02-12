@@ -79,7 +79,7 @@
                 <th>Fecha</th>
                 <th>Diagnóstico</th>
                 <th>Observaciones</th>
-                <th>Acuenta</th>
+                <th>A cuenta</th>
                 <th>Saldo</th>
                 <th>Canselado</th>
             </tr>
