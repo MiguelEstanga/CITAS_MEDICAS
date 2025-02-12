@@ -47,7 +47,14 @@
                         href="{{ route('panel.index') }}">Panel</a>
                 </li>
 
-
+                @can('v_asistente_general')
+                <li class="nav-item {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"">
+                    <a class="nav-link  text-white {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"
+                        href="{{ route('usuarios.index', 'usuario') }}" style="background-color: inherit;">
+                        Usuarios
+                    </a>
+                </li>
+            @endcan
                 @can('v_asistente_general')
                     <li
                         class="nav-item  {{ request()->segment(1) == 'pacientes' ? 'active' : '' }}"
@@ -59,14 +66,7 @@
                     </li>
                 @endcan
 
-                @can('v_asistente_general')
-                    <li class="nav-item {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"">
-                        <a class="nav-link  text-white {{ request()->segment(1) == 'usuarios' ? 'active' : '' }}"
-                            href="{{ route('usuarios.index', 'usuario') }}" style="background-color: inherit;">
-                            Usuarios
-                        </a>
-                    </li>
-                @endcan
+             
 
                 @can('v_admnistrador')
                     <li class="nav-item {{ request()->segment(1) == 'agenda' ? 'active' : '' }} ">
