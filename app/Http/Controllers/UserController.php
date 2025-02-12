@@ -57,7 +57,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|regex:/^[a-zA-Z\s]+$/|max:18',
             'last_name' => 'required|regex:/^[a-zA-Z\s]+$/|max:18',
-            'direccion' => 'required|max:18',
+            'direccion' => 'required|max:60',
             'email' => 'required|email|unique:users,email',
             'cedula' => 'required|numeric',
             'edad' => 'required|numeric',
