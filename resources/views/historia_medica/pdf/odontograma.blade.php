@@ -56,7 +56,7 @@
         /* Sección de “leyenda de colores” */
         .leyenda-colores {
             position: absolute; /* para colocarlo en una esquina */
-            top: 160px;         /* ajusta según necesites */
+            top: 260px;         /* ajusta según necesites */
             right: 30px;        /* ajusta según necesites */
             width: 130px;
             border: 1px solid #000;
@@ -176,13 +176,13 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
-            height: 100px;
+            height: 200px;
             width: 100%;
         }
     </style>
 </head>
 <body>
-    <div style="background-color:#3399ffff ; height: 100px; width: 100%; " class="pdf-header">
+    <div style="background-color:#3399ffff ; height: 200px; width: 100%;  " class="pdf-header">
         <img src="{{$logoBase64}}" alt="">
     </div>
     <!-- Título principal -->

@@ -74,7 +74,7 @@
     
 
     <header style="background-color: #3399ffff;">
-        <img src="{{ $logoBase64}}" alt="Logo de la Empresa" width="100%" height="100px">
+        <img src="{{ $logoBase64}}" alt="Logo de la Empresa" width="100%" height="200px">
         
     </header>
     <h1>Ficha Odontològica de  {{$user->name}} {{$user->last_name}}</h1>
