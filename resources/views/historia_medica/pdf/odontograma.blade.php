@@ -5,6 +5,17 @@
     $fila3 = ['85','84','83','82','81','71','72','73','74','75'];
     $fila4 = ['48','47','46','45','44','43','42','41','31','32','33','34','35','36','37','38'];
 @endphp
+@php
+    // Convertir imagen a Base64
+    $logoPath = storage_path("app/public/sistema/logo.png");
+    if (File::exists($logoPath)) {
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoMime = File::mimeType($logoPath);
+        $logoBase64 = "data:$logoMime;base64,$logoData";
+    } else {
+        $logoBase64 = '';
+    }
+@endphp
 {{-- resources/views/pdf/ficha-odontologica.blade.php --}}
 <!DOCTYPE html>
 <html lang="es">
@@ -45,7 +56,7 @@
         /* Sección de “leyenda de colores” */
         .leyenda-colores {
             position: absolute; /* para colocarlo en una esquina */
-            top: 50px;         /* ajusta según necesites */
+            top: 160px;         /* ajusta según necesites */
             right: 30px;        /* ajusta según necesites */
             width: 130px;
             border: 1px solid #000;
@@ -158,10 +169,22 @@
         #odontolgo{
             display: inline-block;
         }
+        .pdf-header{
+            margin-bottom: 100px;
+        }
+        .pdf-header img{
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            height: 100px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
-
+    <div style="background-color: black; height: 100px; width: 100%; " class="pdf-header">
+        <img src="{{$logoBase64}}" alt="">
+    </div>
     <!-- Título principal -->
     <div class="titulo-ficha">FICHA ODONTOLÓGICA</div>
 
@@ -300,7 +323,7 @@
     </div>
     
     <!-- Leyenda de colores en la esquina -->
-    <div class="leyenda-colores">
+    <div class="leyenda-colores" >
         <h3>Colores</h3>
         <p><strong>Caries:</strong> <span style="color: #ff0000;">Rojo</span></p>
         <p><strong>Obturación:</strong> <span style="color: #0000ff;">Azul</span></p>

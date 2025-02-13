@@ -7,7 +7,7 @@
                 <th>Nombre</th>
                 <th>Cédula</th>
                 <th>Edad</th>
-                <th>Telefono</th>
+                <th>Teléfono</th>
                 <th>Gmail</th>
 
                 <th>Rol</th>

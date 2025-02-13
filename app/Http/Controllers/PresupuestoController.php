@@ -136,12 +136,14 @@ class PresupuestoController extends Controller
        
        $odontograma = json_decode($presupuesto->odontograma->data, true);
         $estado = EstadoBucal::where('id_presupuesto', $id)->first();
+      
        return ReporteController::Pdf([
            'view' => "historia_medica.pdf.odontograma",
            'var' => [
               'datosOdontograma' => $odontograma,
               'presupuesto' => $presupuesto,
-              'estado' => $estado
+              'estado' => $estado,
+              'logo' => asset('storage/sistema/icono_diente.png')
            ]
        ]);
     }

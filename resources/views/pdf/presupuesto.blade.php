@@ -19,9 +19,7 @@
             margin-bottom: 20px;
         }
 
-        header img {
-            max-height: 60px;
-        }
+      
 
         header h1 {
             font-size: 20px;
@@ -62,11 +60,21 @@
 </head>
 
 <body>
-
+    @php
+    // Convertir imagen a Base64
+    $logoPath = storage_path("app/public/sistema/logo.png");
+    if (File::exists($logoPath)) {
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoMime = File::mimeType($logoPath);
+        $logoBase64 = "data:$logoMime;base64,$logoData";
+    } else {
+        $logoBase64 = '';
+    }
+@endphp
     
 
-    <header>
-        <img src="logo.png" alt="Logo de la Empresa">
+    <header style="background-color: black;">
+        <img src="{{ $logoBase64}}" alt="Logo de la Empresa" width="100%" height="100px">
         
     </header>
     <h1>Ficha Odontològica de  {{$user->name}} {{$user->last_name}}</h1>
