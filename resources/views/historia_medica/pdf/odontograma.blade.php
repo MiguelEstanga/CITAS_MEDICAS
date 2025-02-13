@@ -182,7 +182,7 @@
     </style>
 </head>
 <body>
-    <div style="background-color: black; height: 100px; width: 100%; " class="pdf-header">
+    <div style="background-color:#3399ffff ; height: 100px; width: 100%; " class="pdf-header">
         <img src="{{$logoBase64}}" alt="">
     </div>
     <!-- Título principal -->

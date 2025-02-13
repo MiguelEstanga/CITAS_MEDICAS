@@ -73,7 +73,7 @@
 @endphp
     
 
-    <header style="background-color: black;">
+    <header style="background-color: #3399ffff;">
         <img src="{{ $logoBase64}}" alt="Logo de la Empresa" width="100%" height="100px">
         
     </header>
