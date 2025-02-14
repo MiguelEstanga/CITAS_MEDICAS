@@ -182,9 +182,7 @@
     </style>
 </head>
 <body>
-    <div style=" height: 230px; width: 100%;  " class="pdf-header">
-        <img src="{{$logoBase64}}" alt="" height="250px">
-    </div>
+
     <!-- Título principal -->
     <div class="titulo-ficha">FICHA ODONTOLÓGICA</div>
 

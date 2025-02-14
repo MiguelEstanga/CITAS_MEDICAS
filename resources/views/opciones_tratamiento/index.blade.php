@@ -15,7 +15,7 @@
             {{ session('error') }}
         </div>
     @endif
-    <x-modal id="modal1" title="Crear metodo de pago">
+    <x-modal id="modal1" title="Crear tratamiento">
         <form action="{{ route('opciones-tratamiento.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
