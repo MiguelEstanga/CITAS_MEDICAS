@@ -7,7 +7,7 @@
 @endphp
 @php
     // Convertir imagen a Base64
-    $logoPath = storage_path("app/public/sistema/logo.png");
+    $logoPath = storage_path("app/public/sistema/logo2.png");
     if (File::exists($logoPath)) {
         $logoData = base64_encode(file_get_contents($logoPath));
         $logoMime = File::mimeType($logoPath);
@@ -176,14 +176,14 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
-            height: 200px;
+            height: 260px;
             width: 100%;
         }
     </style>
 </head>
 <body>
-    <div style="background-color:#3399ffff ; height: 200px; width: 100%;  " class="pdf-header">
-        <img src="{{$logoBase64}}" alt="">
+    <div style=" height: 230px; width: 100%;  " class="pdf-header">
+        <img src="{{$logoBase64}}" alt="" height="250px">
     </div>
     <!-- Título principal -->
     <div class="titulo-ficha">FICHA ODONTOLÓGICA</div>

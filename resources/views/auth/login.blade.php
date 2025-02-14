@@ -11,7 +11,7 @@
         
         body {
             font-family: Arial, sans-serif;
-            background-color: #fff;
+            background-color: #eeeeff;
             color: #333;
         }
 
@@ -22,11 +22,11 @@
             align-items: center;
             height: 100vh;
             padding: 1rem;
-            background:var(--color_menu);
+            background:#fff;
         }
 
         .container.formulario-login {
-            background:#333;
+            background:#3399ff;
             max-width: 420px;
             width: 100%;
             border-radius: 10px;
