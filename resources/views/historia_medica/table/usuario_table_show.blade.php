@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th>N</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
+            <th>Nombre Y Apellido</th>
+           
             <th>Cédula</th>
             <th>Dirección</th>
             <th>Edad</th>
@@ -18,7 +18,7 @@
         <tr>
             <td>{{ $usuario->id }}</td>
             <td>{{ $usuario->name }}</td>
-            <td>{{ $usuario->last_name }}</td>
+           
             <td>{{ $usuario->cedula }}</td>
             <td>{{ $usuario->direccion ?? "" }}</td>
             <td>{{ $usuario->edad }}</td>

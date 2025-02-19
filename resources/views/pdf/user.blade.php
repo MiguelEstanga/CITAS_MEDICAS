@@ -79,8 +79,8 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
+        <th>Nombre y Apellido</th>
+       
         <th>Email</th>
         <th>Cédula</th>
         <th>Avatar</th>
@@ -94,7 +94,7 @@
       <tr>
         <td>{{ $item->id }}</td>
         <td>{{ $item->name }}</td>
-        <td>{{ $item->last_name }}</td>
+      
         <td>{{ $item->email }}</td>
         <td>{{ $item->cedula }}</td>
         <td><img src="{{asset('storage/' . $item->avatar) ?? user_default() }}" alt=""></td>

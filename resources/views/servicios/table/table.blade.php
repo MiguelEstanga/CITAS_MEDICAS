@@ -14,10 +14,7 @@
                 <label for="editServicioNombre" class="form-label">Nombre</label>
                 <input type="text" name="nombre" class="form-control" required>
             </div>
-            <div class="mb-3 input">
-                <label for="editServicioNombre" class="form-label">Apellido</label>
-                <input type="text" name="apellido" class="form-control" required>
-            </div>
+            
             <div class="mb-3 input">
                 <label for="editServicioNombre" class="form-label">Cédula</label>
                 <input type="text" name="cedula" class="form-control" required>
