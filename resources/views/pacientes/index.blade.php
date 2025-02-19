@@ -28,17 +28,12 @@
         <form class="form-horizontal" action="{{ route('admin.user.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <x-input name="name" :required="true" label="Nombre" type="text" placeholder="Nombre" />
+                <x-input name="name" :required="true" label="Nombre Y Apellido" type="text" placeholder="Nombre y Apellido" />
                 @error('name')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="form-group">
-                <x-input name="last_name" :required="true" label="Apellido" type="text" placeholder="Apellido" />
-                @error('last_name')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
+           
             <div class="form-group">
                 <x-input name="direccion" :required="true" label="Dirección" type="text" placeholder="Direccion" />
                 @error('direccion')

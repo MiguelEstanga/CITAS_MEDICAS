@@ -55,8 +55,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|regex:/^[a-zA-Z\s]+$/|max:18',
-            'last_name' => 'required|regex:/^[a-zA-Z\s]+$/|max:18',
+            'name' => 'required|regex:/^[a-zA-Z\s]+$/|max:60',
+            
             'direccion' => 'required|max:60',
             'email' => 'required|email|unique:users,email',
             'cedula' => 'required|numeric',
@@ -88,7 +88,7 @@ class UserController extends Controller
 
         // Asignar otros campos al modelo User
         $user->name = $request->input('name');
-        $user->last_name = $request->input('last_name');
+        $user->last_name =  $request->input('name');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password')); // Encriptar la contraseña
         $user->cedula = $request->input('cedula');

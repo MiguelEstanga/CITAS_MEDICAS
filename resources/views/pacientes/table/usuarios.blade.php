@@ -6,10 +6,12 @@
         <thead>
             <tr>
                 <th>N</th>
-                <th>Paciente</th>
-                <th>Nombre</th>
+                <th>     {{ $type === 'paciente' ? 'Paciente' : 'Usuario' }}</th>
+            
+                <th>Nombre y Apellido</th>
+                <th>Edad</th>   
                 <th>Cédula</th>
-                <th>Edad</th>
+               
                 <th>Teléfono</th>
                 <th>Gmail</th>
                 @if ($type != 'paciente')
@@ -24,6 +26,7 @@
                     <td>{{ $user->id }}</td>
                     <td><img src="{{ asset('storage/' . $user->avatar) ?? user_default() }}"
                             alt="{{ asset('storage/' . $user->avatar) }}" class="circle_avatar"></td>
+                       
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->edad }}</td>
                     <td>{{ $user->cedula }}</td>
@@ -74,7 +77,7 @@
                         <div class="modal-body">
                             <input type="hidden" id="editUserId" name="id">
                             <div class="mb-3 input">
-                                <label for="editUserName" class="form-label">Nombre</label>
+                                <label for="editUserName" class="form-label">Nombre Y Apellido</label>
                                 <input type="text" class="form-control" id="editUserName" name="name" required>
                             </div>
                             <div class="mb-3 input">
